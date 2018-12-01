@@ -41,7 +41,6 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', '$interval', '$t
 
     var entry = [];
     $scope.populateTable = function(range){
-        console.log(range);
         // Get a Entry object from the factory
         entry = Entries.query({from: range.from, to:range.to});
         entry.$promise.then(function(response){

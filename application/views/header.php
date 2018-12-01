@@ -14,7 +14,12 @@
   </head>
   <body ng-app='myApp' ng-controller="myCtrl">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12 headsection text-center">
+      <div class="row headsection">
+        <div class='col-md-2'></div>
+        <div class="col-md-8 text-center">
           <h1><?php echo $heading?></h1>
+        </div>  
+        <div class='col-md-2'>
+          <a name="" id="" class="btn btn-lg btn-light" href="#!tabulation" role="button">See Tabulation</a>
         </div>
+      </div>

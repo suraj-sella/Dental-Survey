@@ -137,3 +137,6 @@ tbody {
 .ng-table-counts{
 	float: right;
 }
+h1{
+	margin-bottom: 0;
+}
