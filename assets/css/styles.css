@@ -140,3 +140,9 @@ tbody {
 h1{
 	margin-bottom: 0;
 }
+.table thead th{
+	border: 1px solid #dee2e6;
+}
+.emptycell{
+	border-bottom: 1px solid #215769 !important;
+}

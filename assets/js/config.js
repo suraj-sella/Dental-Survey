@@ -3,11 +3,11 @@ app.config(function($routeProvider) {
     .when("/", {
       templateUrl : "/Dental-Survey/assets/views/home.php"
     })
-    .when("/tabulation", {
-      templateUrl : "/Dental-Survey/assets/views/tabulation.php"
+    .when("/complaints", {
+      templateUrl : "/Dental-Survey/assets/views/complaints.php"
     })
-    .when("/green", {
-      templateUrl : "green.htm"
+    .when("/findings", {
+      templateUrl : "/Dental-Survey/assets/views/findings.php"
     })
     .when("/blue", {
       templateUrl : "blue.htm"

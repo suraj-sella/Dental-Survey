@@ -39,6 +39,8 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', function($scope,
         {id: 'Null', title: 'Null'}
     ];
 
+    $scope.totalFields = ($scope.ranges.length - 1) * $scope.genders.length;
+    
     var entry = [];
     $scope.populateTable = function(range){
         // Get a Entry object from the factory
