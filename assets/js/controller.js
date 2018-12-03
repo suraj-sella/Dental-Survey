@@ -1,5 +1,5 @@
 'use strict';
-app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', '$interval', '$timeout', function($scope, Entries, NgTableParams, $timeout, $interval){
+app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', function($scope, Entries, NgTableParams){
     
     $scope.ranges = [{
             title: 'All' , from: 0, to: 150,
