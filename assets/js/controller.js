@@ -1,5 +1,5 @@
 'use strict';
-app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', function($scope, Entries, NgTableParams){
+app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetCompTab', function($scope, Entries, NgTableParams, GetCompTab){
     
     $scope.ranges = [{
             title: 'All' , from: 0, to: 150,
@@ -336,4 +336,11 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', function($scope,
             return 'false';
         }
     }
+
+    $scope.compData = {};
+    $scope.compData = GetCompTab.query();
+    $scope.compData.$promise.then(function(response){
+        $scope.compData = response;
+        console.log(response);
+    });
 }]);

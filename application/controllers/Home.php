@@ -23,12 +23,12 @@ class Home extends CI_Controller {
 		$this->load->helper('url');
         
         $data = array(
-            'title' => 'Home',
+            'title' => 'Dental-Survey Analysis',
             'heading' => 'Dental-Survey Analysis',
             'message' => 'Page#1'
-        );
-
-        $this->load->view('header', $data);
+		);
+		
+		$this->load->view('header', $data);
         $this->load->view('home');
         $this->load->view('footer');
 	}

@@ -96,4 +96,27 @@ class Survey_data extends REST_Controller {
             }
         }
     }
+
+    public function compTab_get(){
+        $distinctComplaints = $this->survey_data_model->getDistinctComplaints();
+        $explodedComplaints = array();
+        $complaints = array();
+        $data = array();
+        for ($i=0;$i<sizeof($distinctComplaints);$i++) { 
+            $explodedComplaints[$i] = explode(';', $distinctComplaints[$i]->comp);
+        }
+        for ($i=0, $k=0; $i<sizeof($explodedComplaints); $i++) { 
+            for ($j=0; $j < sizeof($explodedComplaints[$i]); $j++) { 
+                if(!in_array(ucwords($explodedComplaints[$i][$j]), $complaints)){
+                    $complaints[$k] = ucwords($explodedComplaints[$i][$j]);
+                    $k++;
+                }
+            }
+        }
+        for($i=0;$i<sizeof($complaints);$i++){
+            $data[$i]['complaint'] = $complaints[$i];
+        }
+        $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
 }

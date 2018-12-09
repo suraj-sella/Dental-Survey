@@ -8,8 +8,5 @@ app.config(function($routeProvider) {
     })
     .when("/findings", {
       templateUrl : "/Dental-Survey/assets/views/findings.php"
-    })
-    .when("/blue", {
-      templateUrl : "blue.htm"
     });
   });

@@ -16,15 +16,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td scope="row"></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td scope="row"></td>
-                    <td></td>
-                    <td></td>
+                <tr ng-repeat='x in compData'>
+                    <td>{{ compData[$index].complaint }}</td>
+                    <!-- <td>{{ compData.age1.all }}</td>
+                    <td>{{ compData.age1.male }}</td>
+                    <td>{{ compData.age1.female }}</td> -->
                 </tr>
             </tbody>
         </table>

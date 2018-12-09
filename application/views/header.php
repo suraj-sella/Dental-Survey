@@ -2,10 +2,12 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title><?php echo $title?></title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title><?php echo $title?></title>
+    <link rel="shortcut icon" type="image/png" href="<?php echo base_url('assets/img/tooth.png');?>"/>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">

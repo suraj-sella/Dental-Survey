@@ -4,7 +4,7 @@
         function __construct(){
             parent::__construct();
             $this->load->database();
-            $query = $this->db->select('age, sex, comp, find');
+            // $query = $this->db->select('age, sex, comp, find');
         }
         public function getEntries(){
                 $query = $this->db->get('entries');
@@ -17,8 +17,13 @@
             return $query->result();
         }
         public function getEntriesById($id){
-            // $query = $this->db->get_where('entries', array('id' => $id), $limit, $offset);
             $query = $this->db->get_where('entries', array('id' => $id));
+            return $query->result();
+        }
+        public function getDistinctComplaints(){
+            $this->db->distinct('comp');
+            $this->db->select('comp');
+            $query = $this->db->get('entries');
             return $query->result();
         }
         // public function insert(){
