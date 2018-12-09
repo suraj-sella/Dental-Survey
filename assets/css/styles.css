@@ -8,6 +8,7 @@ body {
 	padding: 1rem;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+	color: white !important;
 }
 
 tbody {
@@ -145,4 +146,7 @@ h1{
 }
 .emptycell{
 	border-bottom: 1px solid #215769 !important;
+}
+.tfoot th {
+    color: #215769;
 }

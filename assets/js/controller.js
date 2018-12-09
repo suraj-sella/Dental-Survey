@@ -1,5 +1,5 @@
 'use strict';
-app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetCompTab', function($scope, Entries, NgTableParams, GetCompTab){
+app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetCompTab', 'GetTotals', function($scope, Entries, NgTableParams, GetCompTab, GetTotals){
     
     $scope.ranges = [{
             title: 'All' , from: 0, to: 150,
@@ -338,9 +338,22 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetCompTab', fu
     }
 
     $scope.compData = {};
+    $scope.totalData = {};
     $scope.compData = GetCompTab.query();
     $scope.compData.$promise.then(function(response){
         $scope.compData = response;
-        console.log(response);
+        // console.log(response);
+    });
+    $scope.godTotal = 0;
+    $scope.totalData = GetTotals.get();
+    $scope.totalData.$promise.then(function(response){
+        $scope.totalData = response;
+        for (var property in $scope.totalData) {
+            if ($scope.totalData.hasOwnProperty(property)) {
+                if($scope.totalData[property].all!=undefined){
+                    $scope.godTotal += $scope.totalData[property].all;
+                }
+            }
+        }
     });
 }]);

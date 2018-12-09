@@ -26,6 +26,25 @@
             $query = $this->db->get('entries');
             return $query->result();
         }
+        public function getByCompAgeGender($comp, $from, $to, $gender){
+            $condition = array('age >= ' => $from, 'age < ' => $to, 'sex = ' => $gender);
+            $this->db->like('comp', $comp);
+            $this->db->select('count(*) as total');
+            $this->db->where($condition);
+            $query = $this->db->get('entries');
+            return $query->result();
+        }
+        public function getAgeRange(){
+            $query = $this->db->get('age-range');
+            return $query->result();
+        }
+        public function getByAge($from, $to, $gender){
+            $condition = array('age >= ' => $from, 'age < ' => $to, 'sex = ' => $gender);
+            $this->db->select('count(*) as total');
+            $this->db->where($condition);
+            $query = $this->db->get('entries');
+            return $query->result();
+        }
         // public function insert(){
         //         $this->title = $_POST['title']; // please read the below note
         //         $this->content = $_POST['content'];

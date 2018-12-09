@@ -98,6 +98,8 @@ class Survey_data extends REST_Controller {
     }
 
     public function compTab_get(){
+        $agerange = $this->survey_data_model->getAgeRange();
+        $allentries = $this->survey_data_model->getEntries();
         $distinctComplaints = $this->survey_data_model->getDistinctComplaints();
         $explodedComplaints = array();
         $complaints = array();
@@ -114,7 +116,41 @@ class Survey_data extends REST_Controller {
             }
         }
         for($i=0;$i<sizeof($complaints);$i++){
+            $total = 0;
+            for($j=1;$j<sizeof($agerange);$j++){
+                $from = $agerange[$j]->age_from;
+                $to = $agerange[$j]->age_to;
+                $male = $this->survey_data_model->getByCompAgeGender($complaints[$i], $from, $to, 'Male')[0]->total;
+                $female = $this->survey_data_model->getByCompAgeGender($complaints[$i], $from, $to, 'Female')[0]->total;
+                $agetotal = $male + $female;
+                $total += $agetotal;
+                $data[$i][$agerange[$j]->age_title]['all'] = $agetotal;
+                $data[$i][$agerange[$j]->age_title]['male'] = $male;
+                $data[$i][$agerange[$j]->age_title]['female'] = $female;
+            }
             $data[$i]['complaint'] = $complaints[$i];
+            $data[$i]['total'] = $total;
+        }
+        // for($i=0;$i<sizeof($data);$i++){
+        //     $data[$i]['age']['all'] = 15;
+        //     $data[$i]['age']['male'] = 5;
+        //     $data[$i]['age']['female'] = 10;
+        // }
+        $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getTotals_get(){
+        $agerange = $this->survey_data_model->getAgeRange();
+        $data = array();
+        for($i=1;$i<sizeof($agerange);$i++){
+            $from = $agerange[$i]->age_from;
+            $to = $agerange[$i]->age_to;
+            $male = $this->survey_data_model->getByAge($from, $to, 'Male')[0]->total;
+            $female = $this->survey_data_model->getByAge($from, $to, 'Female')[0]->total;
+            $agetotal = $male + $female;
+            $data[$agerange[$i]->age_title]['all'] = $agetotal;
+            $data[$agerange[$i]->age_title]['male'] = $male;
+            $data[$agerange[$i]->age_title]['female'] = $female;
         }
         $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }

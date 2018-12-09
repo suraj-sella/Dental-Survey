@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2018 at 05:52 PM
+-- Generation Time: Dec 09, 2018 at 06:49 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -21,6 +21,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `survey-data`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `age-range`
+--
+
+CREATE TABLE `age-range` (
+  `id` int(11) NOT NULL,
+  `age_title` varchar(250) NOT NULL,
+  `age_from` int(20) NOT NULL,
+  `age_to` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `age-range`
+--
+
+INSERT INTO `age-range` (`id`, `age_title`, `age_from`, `age_to`) VALUES
+(1, 'All', 0, 150),
+(2, '0-2', 0, 2),
+(3, '2-6', 2, 6),
+(4, '6-12', 6, 12),
+(5, '12-18', 12, 18),
+(6, '18-24', 18, 24),
+(7, '24-34', 24, 34),
+(8, '34-60', 34, 60),
+(9, '60-75', 60, 75),
+(10, '75-150', 75, 150);
 
 -- --------------------------------------------------------
 
@@ -1097,6 +1126,49 @@ INSERT INTO `entries` (`id`, `timestamp`, `age`, `sex`, `comp`, `find`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `gender-data`
+--
+
+CREATE TABLE `gender-data` (
+  `id` int(11) NOT NULL,
+  `gender_title` varchar(50) NOT NULL,
+  `gender_value` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gender-data`
+--
+
+INSERT INTO `gender-data` (`id`, `gender_title`, `gender_value`) VALUES
+(1, 'All', ''),
+(2, 'Male', '!Female'),
+(3, 'Female', 'Female');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `match-data`
+--
+
+CREATE TABLE `match-data` (
+  `id` int(11) NOT NULL,
+  `match_title` varchar(50) NOT NULL,
+  `match_value` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `match-data`
+--
+
+INSERT INTO `match-data` (`id`, `match_title`, `match_value`) VALUES
+(1, 'All', ''),
+(2, 'Yes', 'Yes'),
+(3, 'No', 'No'),
+(4, 'Null', 'Null');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `others`
 --
 
@@ -1338,6 +1410,12 @@ INSERT INTO `others` (`id`, `name`) VALUES
 --
 
 --
+-- Indexes for table `age-range`
+--
+ALTER TABLE `age-range`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `complaints`
 --
 ALTER TABLE `complaints`
@@ -1347,6 +1425,18 @@ ALTER TABLE `complaints`
 -- Indexes for table `entries`
 --
 ALTER TABLE `entries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gender-data`
+--
+ALTER TABLE `gender-data`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `match-data`
+--
+ALTER TABLE `match-data`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1360,6 +1450,12 @@ ALTER TABLE `others`
 --
 
 --
+-- AUTO_INCREMENT for table `age-range`
+--
+ALTER TABLE `age-range`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `complaints`
 --
 ALTER TABLE `complaints`
@@ -1370,6 +1466,18 @@ ALTER TABLE `complaints`
 --
 ALTER TABLE `entries`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1011;
+
+--
+-- AUTO_INCREMENT for table `gender-data`
+--
+ALTER TABLE `gender-data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `match-data`
+--
+ALTER TABLE `match-data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `others`

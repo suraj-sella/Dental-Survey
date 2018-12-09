@@ -5,3 +5,7 @@ app.factory('Entries', ['$resource', function($resource) {
 app.factory('GetCompTab', ['$resource', function($resource) {
     return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/compTab/');
 }]);
+
+app.factory('GetTotals', ['$resource', function($resource) {
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/getTotals/');
+}]);
