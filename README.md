@@ -1,4 +1,4 @@
-# Items-Inventory-Management
+# Dental Survey Analysis
 Dental Survey System For Analysing Patient Data And Getting The Result Of The Data
 
 AngularJS Version: 1.6.10
