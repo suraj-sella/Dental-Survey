@@ -1,5 +1,5 @@
 'use strict';
-app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTab', 'GetComplaintsTotals', 'GetFindingsTab', 'GetFindingsTotals', function($scope, Entries, NgTableParams, GetComplaintsTab, GetComplaintsTotals, GetFindingsTab, GetFindingsTotals){
+app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTab', 'GetComplaintsTotals', 'GetFindingsTab', 'GetFindingsTotals', 'Excel', '$timeout', function($scope, Entries, NgTableParams, GetComplaintsTab, GetComplaintsTotals, GetFindingsTab, GetFindingsTotals, Excel, $timeout){
     
     $scope.ranges = [{
             title: 'All' , from: 0, to: 150,
@@ -385,5 +385,11 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTa
             }
         }
     });
+
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'WireWorkbenchDataExport');
+        $timeout(function(){location.href=exportHref;},100); // trigger download
+    }
 
 }]);

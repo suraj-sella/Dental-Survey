@@ -1,14 +1,16 @@
 <div class='row'>
     <div class='col-md-12'>
-        <table class="table table-striped text-center table-bordered table-responsive">
+        <table class="table table-striped text-center table-bordered table-responsive" id='findTable'>
             <thead class='thead headsection'>
                 <tr>
-                    <th class='emptycell'> <i class="fas fa-arrow-down"></i> Complaints <i class="fas fa-arrow-down"></i> </th>
+                    <th class='emptycell'> <i class="fas fa-arrow-down"></i> Findings <i class="fas fa-arrow-down"></i> </th>
                     <th colspan='27'> <i class="fas fa-arrow-down"></i> Age Groups <i class="fas fa-arrow-down"></i> </th>
                     <th class='emptycell'></th>
                 </tr>
                 <tr>
-                    <th class='emptycell'></th>
+                    <th class='emptycell'>
+                        <button class="btn btn-light" ng-click="exportToExcel('#findTable')">Export</button>
+                    </th>
                     <th colspan='3' ng-repeat='range in ranges' ng-if='$index > 0'>{{ range.title }}</th>
                     <th class='emptycell'> <i class="fas fa-arrow-down"></i> Total <i class="fas fa-arrow-down"></i> </th>
                 </tr>
