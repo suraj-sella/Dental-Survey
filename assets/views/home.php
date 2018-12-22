@@ -1,6 +1,6 @@
 <div class = 'row'>
     <div class='col-md-10'>
-        <table class="table table-striped text-center table-bordered headsection" ng-table="tableParams" show-filter="true">
+        <table class="table table-striped text-center table-bordered headsection" ng-table="tableParams" show-filter="true" id='homeTable'>
             <tbody>
                 <tr ng-repeat="entry in $data">
                     <td data-title="'Age'" data-filter="{ age: 'assets/views/ageRange.html'}" data-sortable="'age'">{{entry.age}}</td>
@@ -19,5 +19,6 @@
                 <td data-title="'Percentage'">{{totalPercentage(tableParams.total())}} %</td>
             </tbody>
         </table>
+        <button class="btn btn-primary" ng-click="exportToExcel('#homeTable')">Export Data To Excel</button>
     </div>
 </div>
