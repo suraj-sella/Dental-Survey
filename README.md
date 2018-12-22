@@ -16,6 +16,6 @@ PHP Codeigniter is used for the Rest API service & Angular controlls the whole p
 
 1. Create a Database 'survey-data' for this application.
 
-2. Export storage/survey-data.sql into above created database.
+2. Export data/storage/survey-data.sql into above created database.
 
 3. Fire Away!
