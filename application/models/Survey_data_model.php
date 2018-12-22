@@ -45,6 +45,22 @@
             $query = $this->db->get('entries');
             return $query->result();
         }
+
+        public function getDistinctFindings(){
+            $this->db->distinct('find');
+            $this->db->select('find');
+            $query = $this->db->get('entries');
+            return $query->result();
+        }
+        public function getByFindAgeGender($find, $from, $to, $gender){
+            $condition = array('age >= ' => $from, 'age < ' => $to, 'sex = ' => $gender);
+            $this->db->like('find', $find);
+            $this->db->select('count(*) as total');
+            $this->db->where($condition);
+            $query = $this->db->get('entries');
+            return $query->result();
+        }
+
         // public function insert(){
         //         $this->title = $_POST['title']; // please read the below note
         //         $this->content = $_POST['content'];

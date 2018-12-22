@@ -1,5 +1,5 @@
 'use strict';
-app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetCompTab', 'GetTotals', function($scope, Entries, NgTableParams, GetCompTab, GetTotals){
+app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTab', 'GetComplaintsTotals', 'GetFindingsTab', 'GetFindingsTotals', function($scope, Entries, NgTableParams, GetComplaintsTab, GetComplaintsTotals, GetFindingsTab, GetFindingsTotals){
     
     $scope.ranges = [{
             title: 'All' , from: 0, to: 150,
@@ -42,10 +42,13 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetCompTab', 'G
     $scope.totalFields = ($scope.ranges.length - 1) * $scope.genders.length;
     
     var entry = [];
+    var flagFirstTotal = true;
+    $scope.completeTotal = 0;
     $scope.populateTable = function(range){
         // Get a Entry object from the factory
         entry = Entries.query({from: range.from, to:range.to});
         entry.$promise.then(function(response){
+            if(flagFirstTotal)$scope.completeTotal = response.length, flagFirstTotal = false;
             for (let key = 0; key < response.length; key++) {
                 response[key].age = Number(response[key].age);
                 response[key].match = 'Null';
@@ -337,23 +340,50 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetCompTab', 'G
         }
     }
 
-    $scope.compData = {};
-    $scope.totalData = {};
-    $scope.compData = GetCompTab.query();
-    $scope.compData.$promise.then(function(response){
-        $scope.compData = response;
+    $scope.totalPercentage = function(x){
+        let y = $scope.completeTotal;
+        let z = x/y * 100;
+        return z.toFixed(2);
+    }
+
+    $scope.complaintsData = {};
+    $scope.totalComplaintsData = {};
+    $scope.complaintsData = GetComplaintsTab.query();
+    $scope.complaintsData.$promise.then(function(response){
+        $scope.complaintsData = response;
         // console.log(response);
     });
-    $scope.godTotal = 0;
-    $scope.totalData = GetTotals.get();
-    $scope.totalData.$promise.then(function(response){
-        $scope.totalData = response;
-        for (var property in $scope.totalData) {
-            if ($scope.totalData.hasOwnProperty(property)) {
-                if($scope.totalData[property].all!=undefined){
-                    $scope.godTotal += $scope.totalData[property].all;
+    $scope.godComplaintsTotal = 0;
+    $scope.totalComplaintsData = GetComplaintsTotals.get();
+    $scope.totalComplaintsData.$promise.then(function(response){
+        $scope.totalComplaintsData = response;
+        for (var property in $scope.totalComplaintsData) {
+            if ($scope.totalComplaintsData.hasOwnProperty(property)) {
+                if($scope.totalComplaintsData[property].all!=undefined){
+                    $scope.godComplaintsTotal += $scope.totalComplaintsData[property].all;
                 }
             }
         }
     });
+
+    //Findings Section
+    $scope.findingsData = {};
+    $scope.totalData = {};
+    $scope.findingsData = GetFindingsTab.query();
+    $scope.findingsData.$promise.then(function(response){
+        $scope.findingsData = response;
+    });
+    $scope.godFindingsTotal = 0;
+    $scope.totalFindingsData = GetFindingsTotals.get();
+    $scope.totalFindingsData.$promise.then(function(response){
+        $scope.totalFindingsData = response;
+        for (var property in $scope.totalFindingsData) {
+            if ($scope.totalFindingsData.hasOwnProperty(property)) {
+                if($scope.totalFindingsData[property].all!=undefined){
+                    $scope.godFindingsTotal += $scope.totalFindingsData[property].all;
+                }
+            }
+        }
+    });
+
 }]);

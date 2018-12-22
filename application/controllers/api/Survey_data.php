@@ -139,7 +139,7 @@ class Survey_data extends REST_Controller {
         $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
-    public function getTotals_get(){
+    public function getCompTotals_get(){
         $agerange = $this->survey_data_model->getAgeRange();
         $data = array();
         for($i=1;$i<sizeof($agerange);$i++){
@@ -155,4 +155,57 @@ class Survey_data extends REST_Controller {
         $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
+    //FINDINGS TAB
+    public function findTab_get(){
+        $agerange = $this->survey_data_model->getAgeRange();
+        $allentries = $this->survey_data_model->getEntries();
+        $distinctFindings = $this->survey_data_model->getDistinctFindings();
+        $explodedFindings = array();
+        $findings = array();
+        $data = array();
+        for ($i=0;$i<sizeof($distinctFindings);$i++) { 
+            $explodedFindings[$i] = explode(';', $distinctFindings[$i]->find);
+        }
+        for ($i=0, $k=0; $i<sizeof($explodedFindings); $i++) { 
+            for ($j=0; $j < sizeof($explodedFindings[$i]); $j++) { 
+                if(!in_array(ucwords($explodedFindings[$i][$j]), $findings)){
+                    $findings[$k] = ucwords($explodedFindings[$i][$j]);
+                    $k++;
+                }
+            }
+        }
+        for($i=0;$i<sizeof($findings);$i++){
+            $total = 0;
+            for($j=1;$j<sizeof($agerange);$j++){
+                $from = $agerange[$j]->age_from;
+                $to = $agerange[$j]->age_to;
+                $male = $this->survey_data_model->getByFindAgeGender($findings[$i], $from, $to, 'Male')[0]->total;
+                $female = $this->survey_data_model->getByFindAgeGender($findings[$i], $from, $to, 'Female')[0]->total;
+                $agetotal = $male + $female;
+                $total += $agetotal;
+                $data[$i][$agerange[$j]->age_title]['all'] = $agetotal;
+                $data[$i][$agerange[$j]->age_title]['male'] = $male;
+                $data[$i][$agerange[$j]->age_title]['female'] = $female;
+            }
+            $data[$i]['finding'] = $findings[$i];
+            $data[$i]['total'] = $total;
+        }
+        $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getFindTotals_get(){
+        $agerange = $this->survey_data_model->getAgeRange();
+        $data = array();
+        for($i=1;$i<sizeof($agerange);$i++){
+            $from = $agerange[$i]->age_from;
+            $to = $agerange[$i]->age_to;
+            $male = $this->survey_data_model->getByAge($from, $to, 'Male')[0]->total;
+            $female = $this->survey_data_model->getByAge($from, $to, 'Female')[0]->total;
+            $agetotal = $male + $female;
+            $data[$agerange[$i]->age_title]['all'] = $agetotal;
+            $data[$agerange[$i]->age_title]['male'] = $male;
+            $data[$agerange[$i]->age_title]['female'] = $female;
+        }
+        $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
 }

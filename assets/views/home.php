@@ -16,6 +16,7 @@
         <table class="table text-center table-bordered headsection" ng-table>
             <tbody>
                 <td data-title="'Total'">{{tableParams.total()}}</td>
+                <td data-title="'Percentage'">{{totalPercentage(tableParams.total())}}%</td>
             </tbody>
         </table>
     </div>
