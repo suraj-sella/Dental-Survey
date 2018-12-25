@@ -21,17 +21,6 @@
         <div class="col-md-4 text-center">
           <h1><?php echo $heading?></h1>
         </div>  
-        <!-- <div class='col-md-5'>
-        </div>
-        <div class='col-md-1'>
-          <a name="" id="" class="btn btn-light" href="#!" role="button">Home</a>
-        </div>
-        <div class='col-md-1'>
-          <a name="" id="" class="btn btn-light" href="#!complaints" role="button">Complaints</a>
-        </div>
-        <div class='col-md-1'>
-          <a name="" id="" class="btn btn-light" href="#!findings" role="button">Findings</a>
-        </div> -->
         <div class='offset-md-5 col-md-3'>
           <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group mr-2" role="group" aria-label="First group">

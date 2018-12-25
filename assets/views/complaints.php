@@ -9,7 +9,7 @@
                 </tr>
                 <tr>
                     <th class='emptycell'>
-                        <button class="btn btn-light" ng-click="exportToExcel('#compTable')">Export</button>
+                        <button class="btn btn-light" ng-click="exportToExcel('#compTable')" id='exportBtn'>Export</button>
                     </th>
                     <th colspan='3' ng-repeat='range in ranges' ng-if='$index > 0'>{{ range.title }}</th>
                     <th class='emptycell'> <i class="fas fa-arrow-down"></i> Total <i class="fas fa-arrow-down"></i> </th>

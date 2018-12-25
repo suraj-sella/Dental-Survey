@@ -4,23 +4,23 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTa
     $scope.ranges = [{
             title: 'All' , from: 0, to: 150,
         },{
-            title: '0-2' , from: 0, to: 2,
+            title: '0 to 2' , from: 0, to: 2,
         },{
-            title: '2-6' , from: 2, to: 6,
+            title: '2 to 6' , from: 2, to: 6,
         },{
-            title: '6-12' , from: 6, to: 12,
+            title: '6 to 12' , from: 6, to: 12,
         },{
-            title: '12-18' , from: 12, to: 18,
+            title: '12 to 18' , from: 12, to: 18,
         },{
-            title: '18-24' , from: 18, to: 24,
+            title: '18 to 24' , from: 18, to: 24,
         },{
-            title: '24-34' , from: 24, to: 34,
+            title: '24 to 34' , from: 24, to: 34,
         },{
-            title: '34-60' , from: 34, to: 60,
+            title: '34 to 60' , from: 34, to: 60,
         },{
-            title: '60-75' , from: 60, to: 75,
+            title: '60 to 75' , from: 60, to: 75,
         },{
-            title: '75-150' , from: 75, to: 150,
+            title: '75 to 150' , from: 75, to: 150,
     }];
 
     $scope.selectedRange = $scope.ranges[0];
@@ -388,8 +388,15 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTa
 
     //EXPORT MODULE
     $scope.exportToExcel=function(tableId){
-        var exportHref=Excel.tableToExcel(tableId,'WireWorkbenchDataExport');
-        $timeout(function(){location.href=exportHref;},100); // trigger download
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
+            // location.href=exportHref;
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            var link = document.createElement("a");
+            link.download = downloadName + ".xls";
+            link.href = exportHref;
+            link.click();
+        },100);
     }
 
 }]);
