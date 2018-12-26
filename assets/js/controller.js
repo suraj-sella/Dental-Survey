@@ -62,7 +62,7 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTa
                 page: 1,
                 count: 10
             },{
-                counts: [25, 50, 100, 250],
+                counts: [25, 50, 100, 250, 1010],
                 dataset: response
             });
         }, function(reason){
