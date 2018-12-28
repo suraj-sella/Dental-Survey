@@ -15,23 +15,24 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
     <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.css');?>">
   </head>
-  <body ng-app='myApp' ng-controller="myCtrl">
+  <body ng-app='myApp'>
     <div class="container-fluid">
       <div class="row headsection">
         <div class="col-md-4 text-center">
           <h1><?php echo $heading?></h1>
         </div>  
-        <div class='offset-md-5 col-md-3'>
-          <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group mr-2" role="group" aria-label="First group">
-              <a name="" id="" class="btn btn-light" href="#!" role="button">Home</a>
-            </div>
-            <div class="btn-group mr-2" role="group" aria-label="Second group">
-              <a name="" id="" class="btn btn-light" href="#!complaints" role="button">Complaints</a>
-            </div>
-            <div class="btn-group" role="group" aria-label="Third group">
-              <a name="" id="" class="btn btn-light" href="#!findings" role="button">Findings</a>    
-            </div>
+        <div class='offset-md-4 col-md-4'>
+          <div class="btn-group mr-2" role="group" aria-label="First group">
+            <a name="" id="" class="btn btn-light" href="#!" role="button">Home</a>
+          </div>
+          <div class="btn-group mr-2" role="group" aria-label="Second group">
+            <a name="" id="" class="btn btn-light" href="#!complaints" role="button">Complaints</a>
+          </div>
+          <div class="btn-group mr-2" role="group" aria-label="Third group">
+            <a name="" id="" class="btn btn-light" href="#!findings" role="button">Findings</a>    
+          </div>
+          <div class="btn-group" role="group" aria-label="Fourth group">
+            <a name="" id="" class="btn btn-light" href="#!masters" role="button">Masters</a>    
           </div>
         </div>
       </div>

@@ -97,6 +97,16 @@ class Survey_data extends REST_Controller {
         }
     }
 
+    public function getAgeRange_get(){
+        $agerange = $this->survey_data_model->getAgeRange();
+        $this->response($agerange, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getGenders_get(){
+        $genders = $this->survey_data_model->getGenders();
+        $this->response($genders, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
     public function compTab_get(){
         $agerange = $this->survey_data_model->getAgeRange();
         $allentries = $this->survey_data_model->getEntries();
@@ -131,11 +141,6 @@ class Survey_data extends REST_Controller {
             $data[$i]['complaint'] = $complaints[$i];
             $data[$i]['total'] = $total;
         }
-        // for($i=0;$i<sizeof($data);$i++){
-        //     $data[$i]['age']['all'] = 15;
-        //     $data[$i]['age']['male'] = 5;
-        //     $data[$i]['age']['female'] = 10;
-        // }
         $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 

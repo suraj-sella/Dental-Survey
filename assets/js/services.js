@@ -2,6 +2,14 @@ app.factory('Entries', ['$resource', function($resource) {
     return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/entries/:from/:to');
 }]);
 
+app.factory('GetAgeRange', ['$resource', function($resource) {
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/getAgeRange/');
+}]);
+
+app.factory('GetGenders', ['$resource', function($resource) {
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/getGenders/');
+}]);
+
 app.factory('GetComplaintsTab', ['$resource', function($resource) {
     return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/compTab/');
 }]);

@@ -1,5 +1,5 @@
 'use strict';
-app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTab', 'GetComplaintsTotals', 'GetFindingsTab', 'GetFindingsTotals', 'Excel', '$timeout', function($scope, Entries, NgTableParams, GetComplaintsTab, GetComplaintsTotals, GetFindingsTab, GetFindingsTotals, Excel, $timeout){
+app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTab', 'GetComplaintsTotals', 'GetFindingsTab', 'GetFindingsTotals', 'Excel', '$timeout', function($scope, Entries, NgTableParams, GetComplaintsTab, GetComplaintsTotals, GetFindingsTab, GetFindingsTotals, Excel, $timeout){
     
     $scope.ranges = [{
             title: 'All' , from: 0, to: 150,
@@ -346,26 +346,6 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTa
         return z.toFixed(2);
     }
 
-    $scope.complaintsData = {};
-    $scope.totalComplaintsData = {};
-    $scope.complaintsData = GetComplaintsTab.query();
-    $scope.complaintsData.$promise.then(function(response){
-        $scope.complaintsData = response;
-        // console.log(response);
-    });
-    $scope.godComplaintsTotal = 0;
-    $scope.totalComplaintsData = GetComplaintsTotals.get();
-    $scope.totalComplaintsData.$promise.then(function(response){
-        $scope.totalComplaintsData = response;
-        for (var property in $scope.totalComplaintsData) {
-            if ($scope.totalComplaintsData.hasOwnProperty(property)) {
-                if($scope.totalComplaintsData[property].all!=undefined){
-                    $scope.godComplaintsTotal += $scope.totalComplaintsData[property].all;
-                }
-            }
-        }
-    });
-
     //Findings Section
     $scope.findingsData = {};
     $scope.totalData = {};
@@ -385,12 +365,111 @@ app.controller('myCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTa
             }
         }
     });
+}]);
+
+app.controller('compCtrl', ['$scope', 'GetComplaintsTab', 'GetComplaintsTotals', 'Excel', '$timeout', 'GetAgeRange', 'GetGenders', '$q', function($scope, GetComplaintsTab, GetComplaintsTotals, Excel, $timeout, GetAgeRange, GetGenders, $q){
+    
+    $scope.ranges = [];
+    $scope.genders = [];
+    
+    $q.all([
+        //AGE-RANGE
+        $scope.agerange = GetAgeRange.query(),
+        $scope.agerange.$promise.then(function(response){
+            $scope.ranges = response;
+        }),
+        //GENDER-DATA
+        $scope.gender = GetGenders.query(),
+        $scope.gender.$promise.then(function(response){
+            $scope.genders = response;
+        })
+    ]).then(function(response){
+        $scope.totalFields = ($scope.ranges.length - 1) * $scope.genders.length;
+    });
+
+    //COMPLAINTS
+    $scope.complaintsData = {};
+    $scope.totalComplaintsData = {};
+    //Getting Complaints
+    $scope.complaintsData = GetComplaintsTab.query();
+    $scope.complaintsData.$promise.then(function(response){
+        $scope.complaintsData = response;
+    });
+    //Getting Totals
+    $scope.godComplaintsTotal = 0;
+    $scope.totalComplaintsData = GetComplaintsTotals.get();
+    $scope.totalComplaintsData.$promise.then(function(response){
+        $scope.totalComplaintsData = response;
+        //Calculating Totals
+        for (var property in $scope.totalComplaintsData) {
+            if ($scope.totalComplaintsData.hasOwnProperty(property)) {
+                if($scope.totalComplaintsData[property].all!=undefined){
+                    $scope.godComplaintsTotal += $scope.totalComplaintsData[property].all;
+                }
+            }
+        }
+    });
 
     //EXPORT MODULE
     $scope.exportToExcel=function(tableId){
         var exportHref=Excel.tableToExcel(tableId,'Survey Data');
         $timeout(function(){
-            // location.href=exportHref;
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            var link = document.createElement("a");
+            link.download = downloadName + ".xls";
+            link.href = exportHref;
+            link.click();
+        },100);
+    }
+}]);
+
+app.controller('findCtrl', ['$scope', 'GetFindingsTab', 'GetFindingsTotals', 'Excel', '$timeout', 'GetAgeRange', 'GetGenders', '$q', function($scope, GetFindingsTab, GetFindingsTotals, Excel, $timeout, GetAgeRange, GetGenders, $q){
+    
+    $scope.ranges = [];
+    $scope.genders = [];
+    
+    $q.all([
+        //AGE-RANGE
+        $scope.agerange = GetAgeRange.query(),
+        $scope.agerange.$promise.then(function(response){
+            $scope.ranges = response;
+        }),
+        //GENDER-DATA
+        $scope.gender = GetGenders.query(),
+        $scope.gender.$promise.then(function(response){
+            $scope.genders = response;
+        })
+    ]).then(function(response){
+        $scope.totalFields = ($scope.ranges.length - 1) * $scope.genders.length;
+    });
+
+    //FINDINGS
+    $scope.findingsData = {};
+    $scope.totalFindingssData = {};
+    //Getting Findings
+    $scope.findingsData = GetFindingsTab.query();
+    $scope.findingsData.$promise.then(function(response){
+        $scope.findingsData = response;
+    });
+    //Getting Totals
+    $scope.godFindingsTotal = 0;
+    $scope.totalFindingsData = GetFindingsTotals.get();
+    $scope.totalFindingsData.$promise.then(function(response){
+        $scope.totalFindingsData = response;
+        //Calculating Totals
+        for (var property in $scope.totalFindingsData) {
+            if ($scope.totalFindingssData.hasOwnProperty(property)) {
+                if($scope.totalFindingsData[property].all!=undefined){
+                    $scope.godFindingsTotal += $scope.totalFindingsData[property].all;
+                }
+            }
+        }
+    });
+
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
             var downloadName = prompt("What Would You Name The File?", "AnalysisData");
             var link = document.createElement("a");
             link.download = downloadName + ".xls";

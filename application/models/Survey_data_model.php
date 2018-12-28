@@ -38,6 +38,10 @@
             $query = $this->db->get('age-range');
             return $query->result();
         }
+        public function getGenders(){
+            $query = $this->db->get('gender-data');
+            return $query->result();
+        }
         public function getByAge($from, $to, $gender){
             $condition = array('age >= ' => $from, 'age < ' => $to, 'sex = ' => $gender);
             $this->db->select('count(*) as total');
