@@ -1,32 +1,36 @@
 'use strict';
-app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaintsTab', 'GetComplaintsTotals', 'GetFindingsTab', 'GetFindingsTotals', 'Excel', '$timeout', function($scope, Entries, NgTableParams, GetComplaintsTab, GetComplaintsTotals, GetFindingsTab, GetFindingsTotals, Excel, $timeout){
+app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$timeout', '$q', 'GetAgeRange', 'GetGenders', 'GetMatches', function($scope, Entries, NgTableParams, Excel, $timeout, $q, GetAgeRange, GetGenders, GetMatches){
     
-    $scope.ranges = [{
-            title: 'All' , from: 0, to: 150,
-        },{
-            title: '0 to 2' , from: 0, to: 2,
-        },{
-            title: '2 to 6' , from: 2, to: 6,
-        },{
-            title: '6 to 12' , from: 6, to: 12,
-        },{
-            title: '12 to 18' , from: 12, to: 18,
-        },{
-            title: '18 to 24' , from: 18, to: 24,
-        },{
-            title: '24 to 34' , from: 24, to: 34,
-        },{
-            title: '34 to 60' , from: 34, to: 60,
-        },{
-            title: '60 to 75' , from: 60, to: 75,
-        },{
-            title: '75 to 150' , from: 75, to: 150,
-    }];
-
-    $scope.selectedRange = $scope.ranges[0];
-    
+    $scope.ranges = [];
+    $scope.genders = [];
+    $scope.matches = [];
     $scope.matchCount = 0;
     $scope.totalCount = 0;
+    var entry = [];
+    var flagFirstTotal = true;
+    $scope.completeTotal = 0;
+
+    $q.all([
+        //AGE-RANGE
+        $scope.agerange = GetAgeRange.query(),
+        $scope.agerange.$promise.then(function(response){
+            $scope.ranges = response;
+        }),
+        //GENDER-DATA
+        $scope.gender = GetGenders.query(),
+        $scope.gender.$promise.then(function(response){
+            // $scope.genders = response;
+        }),
+        //MATCHES-DATA
+        $scope.match = GetMatches.query(),
+        $scope.match.$promise.then(function(response){
+            // $scope.genders = response;
+        })
+    ]).then(function(response){
+        $scope.selectedRange = $scope.ranges[0];
+        $scope.populateTable($scope.selectedRange);
+    });
+    
     $scope.genders = [
         {id: '', title: 'All'},
         {id: '!Female', title: 'Male'},
@@ -38,12 +42,7 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaints
         {id: 'No', title: 'No'},
         {id: 'Null', title: 'Null'}
     ];
-
-    $scope.totalFields = ($scope.ranges.length - 1) * $scope.genders.length;
     
-    var entry = [];
-    var flagFirstTotal = true;
-    $scope.completeTotal = 0;
     $scope.populateTable = function(range){
         // Get a Entry object from the factory
         entry = Entries.query({from: range.from, to:range.to});
@@ -69,8 +68,6 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaints
             console.log(reason);
         });
     }
-
-    $scope.populateTable($scope.selectedRange);
 
     $scope.checkMatch = function(data){
         $scope.noFindFor = [];
@@ -346,25 +343,18 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'GetComplaints
         return z.toFixed(2);
     }
 
-    //Findings Section
-    $scope.findingsData = {};
-    $scope.totalData = {};
-    $scope.findingsData = GetFindingsTab.query();
-    $scope.findingsData.$promise.then(function(response){
-        $scope.findingsData = response;
-    });
-    $scope.godFindingsTotal = 0;
-    $scope.totalFindingsData = GetFindingsTotals.get();
-    $scope.totalFindingsData.$promise.then(function(response){
-        $scope.totalFindingsData = response;
-        for (var property in $scope.totalFindingsData) {
-            if ($scope.totalFindingsData.hasOwnProperty(property)) {
-                if($scope.totalFindingsData[property].all!=undefined){
-                    $scope.godFindingsTotal += $scope.totalFindingsData[property].all;
-                }
-            }
-        }
-    });
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            var link = document.createElement("a");
+            link.download = downloadName + ".xls";
+            link.href = exportHref;
+            link.click();
+        },100);
+    }
+
 }]);
 
 app.controller('compCtrl', ['$scope', 'GetComplaintsTab', 'GetComplaintsTotals', 'Excel', '$timeout', 'GetAgeRange', 'GetGenders', '$q', function($scope, GetComplaintsTab, GetComplaintsTotals, Excel, $timeout, GetAgeRange, GetGenders, $q){

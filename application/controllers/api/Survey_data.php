@@ -47,7 +47,8 @@ class Survey_data extends REST_Controller {
                 // Set the response and exit
                 $this->response([
                     'status' => FALSE,
-                    'message' => 'No users were found'
+                    'message' => 'No Entries OR Error!!',
+                    'response' => $users
                 ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
             }
         }
@@ -105,6 +106,11 @@ class Survey_data extends REST_Controller {
     public function getGenders_get(){
         $genders = $this->survey_data_model->getGenders();
         $this->response($genders, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getMatches_get(){
+        $matches = $this->survey_data_model->getMatches();
+        $this->response($matches, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
     public function compTab_get(){

@@ -10,6 +10,10 @@ app.factory('GetGenders', ['$resource', function($resource) {
     return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/getGenders/');
 }]);
 
+app.factory('GetMatches', ['$resource', function($resource) {
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/getMatches/');
+}]);
+
 app.factory('GetComplaintsTab', ['$resource', function($resource) {
     return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/compTab/');
 }]);
