@@ -65,7 +65,16 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$tim
                 dataset: response
             });
         }, function(reason){
-            console.log(reason);
+            if(reason.status=404){
+                console.log(reason);
+                $scope.tableParams = new NgTableParams({
+                    page: 1,
+                    count: 10
+                },{
+                    counts: [25, 50, 100, 250, 1010],
+                    dataset: reason.data.response
+                });
+            }
         });
     }
 
@@ -170,6 +179,24 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$tim
                 $scope.noFindFor.push('Pain in the gums');
             }
         }
+        if(data.comp.includes('Redness of gums')){
+            if(data.find.includes('Oral lichen planus')||data.find.includes('Desquamative gingivitis')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Redness of gums');
+            }
+        }
+        if(data.comp.includes('receeded gums')||data.comp.includes('Receding gums')){
+            if(data.find.includes('Recession')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('receeded gums/ Receding gums');
+            }
+        }
         if(data.comp.includes('Sensitivity')){
             if(data.find.includes('Attrition')||data.find.includes('Abrasion')||data.find.includes('Erosion')||data.find.includes('Decayed')||data.find.includes('Deposits')||data.find.includes('Recession')){
                 $scope.matchCount++;
@@ -269,13 +296,31 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$tim
                 $scope.noFindFor.push('Broken tooth');
             }
         }
-        if(data.comp.includes('Reduced mouth opening')){
+        if(data.comp.includes('Complaints about denture')){
+            if(data.find.includes('Missing teeth')||data.find.includes('Denture stomatitis')||data.find.includes('Denture stomatitis')||data.find.includes('reddish areas wrt denture bearing areas')||data.find.includes('Broken maxillary denture')||data.find.includes('Resorted ridges')||data.find.includes('Fractured mandibular denture')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Complaints about denture');
+            }
+        }
+        if(data.comp.includes('Sharp tooth')){
+            if(data.find.includes('Pericoronitis')||data.find.includes('Frictional keratosis')||data.find.includes('Sharp cusp')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Sharp tooth');
+            }
+        }
+        if(data.comp.includes('Reduced mouth opening')||data.comp.includes('Limited mouth opening')){
             if(data.find.includes('OSMF')||data.find.includes('Reduced mouth opening')||data.find.includes('Pericoronitis')){
                 $scope.matchCount++;
                 return 'true';
             }
             else{
-                $scope.noFindFor.push('Reduced mouth opening');
+                $scope.noFindFor.push('Reduced mouth opening/ Limited mouth opening');
             }
         }
         if(data.comp.includes('Burning sensation')){
@@ -324,12 +369,39 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$tim
             }
         }
         if(data.comp.includes('Swelling of facial region')){
-            if(data.find.includes('Facial swelling')||data.find.includes('Swelling over cheek')||data.find.includes('Swelling of face')){
+            if(data.find.includes('Space infection')||data.find.includes('Swelling over cheek')||data.find.includes('Swelling of face')){
                 $scope.matchCount++;
                 return 'true';
             }
             else{
                 $scope.noFindFor.push('Swelling of facial region');
+            }
+        }
+        if(data.comp.includes('Injury to right cheek due to braces')){
+            if(data.find.includes('Traumatic Ulcer on buccal mucosa due to arch wire')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Injury to right cheek due to braces');
+            }
+        }
+        if(data.comp.includes('Retained tooth')){
+            if(data.find.includes('Overretained deciduous c')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Retained tooth');
+            }
+        }
+        if(data.comp.includes('Incomplete rct')){
+            if(data.find.includes('Needing rct')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Incomplete rct');
             }
         }
         if($scope.noFindFor.length>0){
