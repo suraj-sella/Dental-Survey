@@ -11,12 +11,12 @@
                     <th class='emptycell'>
                         <button class="btn btn-light" ng-click="exportToExcel('#compTable')" id='exportBtn'>Export</button>
                     </th>
-                    <th colspan='3' ng-repeat='range in ranges' ng-if='$index > 0'>{{ range.age_title }}</th>
+                    <th colspan='3' ng-repeat='range in ranges' ng-if='$index > 0'>{{ range.title }}</th>
                     <th class='emptycell'> <i class="fas fa-arrow-down"></i> Total <i class="fas fa-arrow-down"></i> </th>
                 </tr>
                 <tr>
                     <th> <i class="fas fa-arrow-right"></i> Genders <i class="fas fa-arrow-right"></i> </th>
-                    <th ng-repeat="x in [].constructor(totalFields) track by $index">{{ genders[$index%3].gender_title | limitTo : 1 }}</th>
+                    <th ng-repeat="x in [].constructor(totalFields) track by $index">{{ genders[$index%3].title | limitTo : 1 }}</th>
                     <th class='emptycell'></th>
                 </tr>
             </thead>

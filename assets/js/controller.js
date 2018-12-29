@@ -9,7 +9,9 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$tim
     var entry = [];
     var flagFirstTotal = true;
     $scope.completeTotal = 0;
-
+    $scope.selectedRange = [];
+    $scope.selectedGender = [];
+    
     $q.all([
         //AGE-RANGE
         $scope.agerange = GetAgeRange.query(),
@@ -17,25 +19,21 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$tim
             $scope.ranges = response;
         }),
         //GENDER-DATA
-        $scope.gender = GetGenders.query(),
-        $scope.gender.$promise.then(function(response){
-            // $scope.genders = response;
+        $scope.genderdata = GetGenders.query(),
+        $scope.genderdata.$promise.then(function(response){
+            $scope.genders = response;
         }),
         //MATCHES-DATA
         $scope.match = GetMatches.query(),
         $scope.match.$promise.then(function(response){
-            // $scope.genders = response;
+            // $scope.matches = response;
         })
     ]).then(function(response){
         $scope.selectedRange = $scope.ranges[0];
-        $scope.populateTable($scope.selectedRange);
+        $scope.selectedGender = $scope.genders[0];
+        $scope.populateTable($scope.selectedRange, $scope.selectedGender);
     });
     
-    $scope.genders = [
-        {id: '', title: 'All'},
-        {id: '!Female', title: 'Male'},
-        {id: 'Female', title: 'Female'}
-    ];
     $scope.matches = [
         {id: '', title: 'All'},
         {id: 'Yes', title: 'Yes'},
@@ -43,9 +41,11 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$tim
         {id: 'Null', title: 'Null'}
     ];
     
-    $scope.populateTable = function(range){
+    $scope.populateTable = function(range, gender){
+        $scope.selectedRange = range;
+        $scope.selectedGender = gender;
         // Get a Entry object from the factory
-        entry = Entries.query({from: range.from, to:range.to});
+        entry = Entries.query({from: range.from, to: range.to, gender: gender.value});
         entry.$promise.then(function(response){
             if(flagFirstTotal)$scope.completeTotal = response.length, flagFirstTotal = false;
             for (let key = 0; key < response.length; key++) {
@@ -376,7 +376,7 @@ app.controller('compCtrl', ['$scope', 'GetComplaintsTab', 'GetComplaintsTotals',
     ]).then(function(response){
         $scope.totalFields = ($scope.ranges.length - 1) * $scope.genders.length;
     });
-
+    
     //COMPLAINTS
     $scope.complaintsData = {};
     $scope.totalComplaintsData = {};
@@ -399,7 +399,7 @@ app.controller('compCtrl', ['$scope', 'GetComplaintsTab', 'GetComplaintsTotals',
             }
         }
     });
-
+    
     //EXPORT MODULE
     $scope.exportToExcel=function(tableId){
         var exportHref=Excel.tableToExcel(tableId,'Survey Data');
@@ -431,29 +431,28 @@ app.controller('findCtrl', ['$scope', 'GetFindingsTab', 'GetFindingsTotals', 'Ex
         })
     ]).then(function(response){
         $scope.totalFields = ($scope.ranges.length - 1) * $scope.genders.length;
-    });
-
-    //FINDINGS
-    $scope.findingsData = {};
-    $scope.totalFindingssData = {};
-    //Getting Findings
-    $scope.findingsData = GetFindingsTab.query();
-    $scope.findingsData.$promise.then(function(response){
-        $scope.findingsData = response;
-    });
-    //Getting Totals
-    $scope.godFindingsTotal = 0;
-    $scope.totalFindingsData = GetFindingsTotals.get();
-    $scope.totalFindingsData.$promise.then(function(response){
-        $scope.totalFindingsData = response;
-        //Calculating Totals
-        for (var property in $scope.totalFindingsData) {
-            if ($scope.totalFindingssData.hasOwnProperty(property)) {
-                if($scope.totalFindingsData[property].all!=undefined){
-                    $scope.godFindingsTotal += $scope.totalFindingsData[property].all;
+        //FINDINGS
+        $scope.findingsData = {};
+        $scope.totalFindingssData = {};
+        //Getting Findings
+        $scope.findingsData = GetFindingsTab.query();
+        $scope.findingsData.$promise.then(function(response){
+            $scope.findingsData = response;
+        });
+        //Getting Totals
+        $scope.godFindingsTotal = 0;
+        $scope.totalFindingsData = GetFindingsTotals.get();
+        $scope.totalFindingsData.$promise.then(function(response){
+            $scope.totalFindingsData = response;
+            //Calculating Totals
+            for (var property in $scope.totalFindingsData) {
+                if ($scope.totalFindingsData.hasOwnProperty(property)) {
+                    if($scope.totalFindingsData[property].all!=undefined){
+                        $scope.godFindingsTotal += $scope.totalFindingsData[property].all;
+                    }
                 }
             }
-        }
+        });
     });
 
     //EXPORT MODULE

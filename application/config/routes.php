@@ -62,4 +62,4 @@ $route['translate_uri_dashes'] = TRUE;
 // $route['api/example/users/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/example/users/id/$1/format/$3$4'; // Example 8
 $route['api/survey_data/entries/(:num)'] = 'api/survey_data/entries/id/$1';
 // $route['api/survey_data/entries/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/survey_data/entries/id/$1/format/$3$4';
-$route['api/survey_data/entries/(:num)/(:num)'] = 'api/survey_data/entries/from/$1/to/$2';
+$route['api/survey_data/entries/(:num)/(:num)/([a-zA-Z]+)'] = 'api/survey_data/entries/from/$1/to/$2/gender/$3';

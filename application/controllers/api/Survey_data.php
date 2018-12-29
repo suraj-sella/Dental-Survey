@@ -39,8 +39,9 @@ class Survey_data extends REST_Controller {
         //Get By Age Range
         $from = (int)$this->get('from');
         $to = (int)$this->get('to');
+        $gender = $this->get('gender');
         if(is_numeric($from) && is_numeric($to)){
-            $users = $this->survey_data_model->getEntriesByAge($from, $to);
+            $users = $this->survey_data_model->getEntriesByAgeGender($from, $to, $gender);
             if($users){
                 $this->response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code    
             }else {
@@ -134,15 +135,15 @@ class Survey_data extends REST_Controller {
         for($i=0;$i<sizeof($complaints);$i++){
             $total = 0;
             for($j=1;$j<sizeof($agerange);$j++){
-                $from = $agerange[$j]->age_from;
-                $to = $agerange[$j]->age_to;
+                $from = $agerange[$j]->from;
+                $to = $agerange[$j]->to;
                 $male = $this->survey_data_model->getByCompAgeGender($complaints[$i], $from, $to, 'Male')[0]->total;
                 $female = $this->survey_data_model->getByCompAgeGender($complaints[$i], $from, $to, 'Female')[0]->total;
                 $agetotal = $male + $female;
                 $total += $agetotal;
-                $data[$i][$agerange[$j]->age_title]['all'] = $agetotal;
-                $data[$i][$agerange[$j]->age_title]['male'] = $male;
-                $data[$i][$agerange[$j]->age_title]['female'] = $female;
+                $data[$i][$agerange[$j]->title]['all'] = $agetotal;
+                $data[$i][$agerange[$j]->title]['male'] = $male;
+                $data[$i][$agerange[$j]->title]['female'] = $female;
             }
             $data[$i]['complaint'] = $complaints[$i];
             $data[$i]['total'] = $total;
@@ -154,14 +155,14 @@ class Survey_data extends REST_Controller {
         $agerange = $this->survey_data_model->getAgeRange();
         $data = array();
         for($i=1;$i<sizeof($agerange);$i++){
-            $from = $agerange[$i]->age_from;
-            $to = $agerange[$i]->age_to;
+            $from = $agerange[$i]->from;
+            $to = $agerange[$i]->to;
             $male = $this->survey_data_model->getByAge($from, $to, 'Male')[0]->total;
             $female = $this->survey_data_model->getByAge($from, $to, 'Female')[0]->total;
             $agetotal = $male + $female;
-            $data[$agerange[$i]->age_title]['all'] = $agetotal;
-            $data[$agerange[$i]->age_title]['male'] = $male;
-            $data[$agerange[$i]->age_title]['female'] = $female;
+            $data[$agerange[$i]->title]['all'] = $agetotal;
+            $data[$agerange[$i]->title]['male'] = $male;
+            $data[$agerange[$i]->title]['female'] = $female;
         }
         $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
@@ -188,15 +189,15 @@ class Survey_data extends REST_Controller {
         for($i=0;$i<sizeof($findings);$i++){
             $total = 0;
             for($j=1;$j<sizeof($agerange);$j++){
-                $from = $agerange[$j]->age_from;
-                $to = $agerange[$j]->age_to;
+                $from = $agerange[$j]->from;
+                $to = $agerange[$j]->to;
                 $male = $this->survey_data_model->getByFindAgeGender($findings[$i], $from, $to, 'Male')[0]->total;
                 $female = $this->survey_data_model->getByFindAgeGender($findings[$i], $from, $to, 'Female')[0]->total;
                 $agetotal = $male + $female;
                 $total += $agetotal;
-                $data[$i][$agerange[$j]->age_title]['all'] = $agetotal;
-                $data[$i][$agerange[$j]->age_title]['male'] = $male;
-                $data[$i][$agerange[$j]->age_title]['female'] = $female;
+                $data[$i][$agerange[$j]->title]['all'] = $agetotal;
+                $data[$i][$agerange[$j]->title]['male'] = $male;
+                $data[$i][$agerange[$j]->title]['female'] = $female;
             }
             $data[$i]['finding'] = $findings[$i];
             $data[$i]['total'] = $total;
@@ -208,14 +209,14 @@ class Survey_data extends REST_Controller {
         $agerange = $this->survey_data_model->getAgeRange();
         $data = array();
         for($i=1;$i<sizeof($agerange);$i++){
-            $from = $agerange[$i]->age_from;
-            $to = $agerange[$i]->age_to;
+            $from = $agerange[$i]->from;
+            $to = $agerange[$i]->to;
             $male = $this->survey_data_model->getByAge($from, $to, 'Male')[0]->total;
             $female = $this->survey_data_model->getByAge($from, $to, 'Female')[0]->total;
             $agetotal = $male + $female;
-            $data[$agerange[$i]->age_title]['all'] = $agetotal;
-            $data[$agerange[$i]->age_title]['male'] = $male;
-            $data[$agerange[$i]->age_title]['female'] = $female;
+            $data[$agerange[$i]->title]['all'] = $agetotal;
+            $data[$agerange[$i]->title]['male'] = $male;
+            $data[$agerange[$i]->title]['female'] = $female;
         }
         $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }

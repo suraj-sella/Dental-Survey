@@ -1,5 +1,5 @@
 app.factory('Entries', ['$resource', function($resource) {
-    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/entries/:from/:to');
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/entries/:from/:to/:gender');
 }]);
 
 app.factory('GetAgeRange', ['$resource', function($resource) {

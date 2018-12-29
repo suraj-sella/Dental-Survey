@@ -19,7 +19,7 @@
     <div class="container-fluid">
       <div class="row headsection">
         <div class="col-md-4 text-center">
-          <h1><?php echo $heading?></h1>
+          <h2><?php echo $heading?></h2>
         </div>  
         <div class='offset-md-4 col-md-4'>
           <div class="btn-group mr-2" role="group" aria-label="First group">

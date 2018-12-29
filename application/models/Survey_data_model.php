@@ -10,8 +10,9 @@
                 $query = $this->db->get('entries');
                 return $query->result();
         }
-        public function getEntriesByAge($from, $to){
-            $condition = array('age >=' => $from, 'age <' => $to);
+        public function getEntriesByAgeGender($from, $to, $gender){
+            if($gender=='all') $condition = array('age >=' => $from, 'age <' => $to);
+            else $condition = array('age >=' => $from, 'age <' => $to, 'sex' => $gender);
             $this->db->where($condition);
             $query = $this->db->get('entries');
             return $query->result();

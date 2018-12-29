@@ -1,12 +1,25 @@
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 1.2rem;  /* remove scrollbar space */
+    background: #215568;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #e9feff;
+}
+
 body {
 	background-color: #e9feff;
 	color: white;
+	line-height: 1.1;
 }
 
 .headsection {
 	background: #005669;
 	padding: 1rem;
-	margin-top: 1rem;
 	margin-bottom: 1rem;
 	color: white !important;
 }
