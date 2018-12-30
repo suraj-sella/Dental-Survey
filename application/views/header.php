@@ -10,9 +10,10 @@
     <link rel="shortcut icon" type="image/png" href="<?php echo base_url('assets/img/tooth.png');?>"/>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.css'/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap.min.css');?>">
+    <link rel='stylesheet' href='<?php echo base_url('assets/css/ng-table.css');?>'/>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/fontawesome.css');?>">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.css');?>">
   </head>
   <body ng-app='myApp'>
@@ -22,17 +23,34 @@
           <h2><?php echo $heading?></h2>
         </div>  
         <div class='offset-md-4 col-md-4'>
-          <div class="btn-group mr-2" role="group" aria-label="First group">
-            <a name="" id="" class="btn btn-light" href="#!" role="button">Home</a>
-          </div>
-          <div class="btn-group mr-2" role="group" aria-label="Second group">
-            <a name="" id="" class="btn btn-light" href="#!complaints" role="button">Complaints</a>
-          </div>
-          <div class="btn-group mr-2" role="group" aria-label="Third group">
-            <a name="" id="" class="btn btn-light" href="#!findings" role="button">Findings</a>    
-          </div>
-          <div class="btn-group" role="group" aria-label="Fourth group">
-            <a name="" id="" class="btn btn-light" href="#!masters" role="button">Masters</a>    
-          </div>
+          <nav class="navbar navbar-expand-lg">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a name="" id="" class="btn-light nav-link" href="#!" role="button">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a name="" id="" class="btn-light nav-link" href="#!complaints" role="button">Complaints</a>
+                </li>
+                <li class="nav-item">
+                  <a name="" id="" class="btn-light nav-link" href="#!findings" role="button">Findings</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a name="" id="navbarDropdownMenuLink" class="btn-light nav-link dropdown-toggle" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Masters</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#!ageranges">Age Ranges Data</a>
+                    <a class="dropdown-item" href="#!genders">Genders Data</a>
+                    <a class="dropdown-item" href="#!matches">Matches Data</a>
+                    <a class="dropdown-item" href="#!complaintsmaster">Complaints List</a>
+                    <a class="dropdown-item" href="#!findingsmaster">Findings List</a>
+                    <a class="dropdown-item" href="#!scoringchart">Scoring Chart</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
         </div>
       </div>

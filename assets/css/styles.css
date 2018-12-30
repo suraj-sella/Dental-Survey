@@ -166,3 +166,16 @@ h1{
 .table thead th {
 	vertical-align: inherit;
 }
+.nav-link{
+	font-size: 1.1rem;
+	background-color: #f8f9fa;
+	border-color: #f8f9fa;
+	border-radius: .25rem;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.navbar-nav{
+	padding-left: 1rem;
+}
+.nav-item{
+	margin-right: 0.5rem;
+}

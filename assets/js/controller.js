@@ -483,6 +483,16 @@ app.controller('compCtrl', ['$scope', 'GetComplaintsTab', 'GetComplaintsTotals',
             link.click();
         },100);
     }
+
+    //STICKY THEAD
+    // var off = $('thead.headsection').offset();
+    // $(window).scroll(function (event) {
+    //     var scroll = $(window).scrollTop();
+    //     if(scroll > off.top){
+            
+    //     }
+    // });
+
 }]);
 
 app.controller('findCtrl', ['$scope', 'GetFindingsTab', 'GetFindingsTotals', 'Excel', '$timeout', 'GetAgeRange', 'GetGenders', '$q', function($scope, GetFindingsTab, GetFindingsTotals, Excel, $timeout, GetAgeRange, GetGenders, $q){
@@ -537,6 +547,57 @@ app.controller('findCtrl', ['$scope', 'GetFindingsTab', 'GetFindingsTotals', 'Ex
             link.href = exportHref;
             link.click();
         },100);
+    }
+
+}]);
+
+app.controller('agerangesCtrl', ['$scope', 'GetAgeRange', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, GetAgeRange, $q, NgTableParams, Excel, $timeout){
+    $scope.ranges = [];
+    $q.all([
+        //AGE-RANGE
+        $scope.agerange = GetAgeRange.query(),
+        $scope.agerange.$promise.then(function(response){
+            for (let key = 0; key < response.length; key++) {
+                response[key].id = Number(response[key].id);
+                response[key].from = Number(response[key].from);
+                response[key].to = Number(response[key].to);
+            }
+            $scope.ranges = response;
+        }),
+    ]).then(function(response){
+        $scope.tableParams = new NgTableParams({
+            page: 1,
+            count: 10
+        },{
+            counts: [5, 10, 20, 50],
+            dataset: $scope.ranges
+        });
+    });
+
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            if (downloadName != null) {
+                var link = document.createElement("a");
+                link.download = downloadName + ".xls";
+                link.href = exportHref;
+                link.click();
+            }
+        },100);
+    }
+
+    //EDIT FUNCTION DECISION
+    $scope.edit = function(fname, entry){
+        if(fname=='age'){
+            $scope.editAgeRange(entry);
+        }
+    }
+
+    //EDIT AGE RANGE
+    $scope.editAgeRange = function (entry) {
+               
     }
 
 }]);

@@ -73,6 +73,17 @@ app.factory('Excel', ['$window', function($window) {
                     worksheet:worksheetName,
                     table:hometable.html()
                 };
+            }if(tableId=='#agerangesTable'){
+                var agerangestable = table.clone(true);
+                agerangestable.find('tr')[1].remove();
+                agerangestable.find("tr").each(function(){
+                    $(this).find("th:eq(4)").remove();
+                    $(this).find("td:eq(4)").remove();
+                });
+                var ctx={
+                    worksheet:worksheetName,
+                    table:agerangestable.html()
+                };
             }else if((tableId=='#compTable')||(tableId=='#findTable')){
                 var comptable = table.clone(true);
                 $(comptable).find('#exportBtn').remove();
