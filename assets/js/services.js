@@ -19,7 +19,11 @@ app.factory('GetGenders', ['$resource', function($resource) {
 }]);
 
 app.factory('GetMatches', ['$resource', function($resource) {
-    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/getMatches/');
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/getMatches/:id', {}, {
+        put: {
+            method: 'PUT'
+        }
+    });
 }]);
 
 app.factory('GetComplaintsTab', ['$resource', function($resource) {

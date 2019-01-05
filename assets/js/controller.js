@@ -755,3 +755,104 @@ app.controller('gendersCtrl', ['$scope', 'GetGenders', '$q', 'NgTableParams', 'E
     $scope.populateTable();
 
 }]);
+
+app.controller('matchesCtrl', ['$scope', 'GetMatches', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, GetMatches, $q, NgTableParams, Excel, $timeout){
+    
+    $scope.matches = [];
+    $scope.populateTable=function(){
+        $q.all([
+            //AGE-RANGE
+            $scope.match = GetMatches.query(),
+            $scope.match.$promise.then(function(response){
+                for (let key = 0; key < response.length; key++) {
+                    response[key].id = Number(response[key].id);
+                }
+                $scope.matches = response;
+            }),
+        ]).then(function(response){
+            $scope.tableParams = new NgTableParams({
+                page: 1,
+                count: 10
+            },{
+                counts: [],
+                dataset: $scope.matches
+            });
+            $scope.newRow.id = $scope.tableParams.total() + 1;
+        });
+    }
+    
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            if (downloadName != null) {
+                var link = document.createElement("a");
+                link.download = downloadName + ".xls";
+                link.href = exportHref;
+                link.click();
+            }
+        },100);
+    }
+
+    $scope.editShow = false;      
+    $scope.editRow = [];      
+    $scope.newRow = [];      
+    
+    $scope.editMatch = function (entry) {
+        $scope.editShow = true;      
+        $scope.editRow = entry;
+    }
+    
+    $scope.updateMatch = function (entry) {
+        $scope.match = GetMatches.put(entry),
+        $scope.match.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                $scope.editRow = [];    
+                alert('Updated Successfully!');
+            }else{
+                console.log(response);
+            }
+            $scope.editShow = false;    
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.deleteMatch = function (entry) {
+        $scope.match = GetMatches.delete({id: entry.id}),
+        $scope.match.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                alert('Deleted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.insertMatch = function (entry) {
+        $scope.match = GetMatches.save({
+            id: entry.id,
+            title: entry.title,
+            value: entry.value
+        }),
+        $scope.match.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                $scope.newRow = [];    
+                alert('Inserted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.populateTable();
+
+}]);

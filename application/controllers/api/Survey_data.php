@@ -116,7 +116,7 @@ class Survey_data extends REST_Controller {
 
     public function getAgeRange_delete($data){
         $id = (int)$data;
-        $response = $this->db->delete('age-range', array('id' => $id)); 
+        $response = $this->survey_data_model->deleteAgeRange($data);
         $result = array(
             'status' => 1,
             'response' => $response
@@ -151,7 +151,7 @@ class Survey_data extends REST_Controller {
 
     public function getGenders_delete($data){
         $id = (int)$data;
-        $response = $this->db->delete('gender-data', array('id' => $id)); 
+        $response = $this->survey_data_model->deleteGenders($data);
         $result = array(
             'status' => 1,
             'response' => $response
@@ -172,6 +172,36 @@ class Survey_data extends REST_Controller {
     public function getMatches_get(){
         $matches = $this->survey_data_model->getMatches();
         $this->response($matches, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getMatches_put(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->updateMatch($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getMatches_delete($data){
+        $id = (int)$data;
+        $response = $this->survey_data_model->deleteMatch($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getMatches_post(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->insertMatch($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
     public function compTab_get(){

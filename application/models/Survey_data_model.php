@@ -51,8 +51,7 @@
             return !!$this->db->affected_rows();
         }
         public function deleteAgeRange($id){
-            $this->db->where('id', $id);
-            $this->db->delete('age-range');
+            $this->db->delete('age-range', array('id' => $id)); 
             return !!$this->db->affected_rows();
         }
         public function insertAgeRange($data){
@@ -74,8 +73,7 @@
             return !!$this->db->affected_rows();
         }
         public function deleteGender($id){
-            $this->db->where('id', $id);
-            $this->db->delete('gender-data');
+            $this->db->delete('gender-data', array('id' => $id)); 
             return !!$this->db->affected_rows();
         }
         public function insertGender($data){
@@ -85,6 +83,24 @@
         public function getMatches(){
             $query = $this->db->get('match-data');
             return $query->result();
+        }
+        public function updateMatch($data){
+            extract($data);
+            $rowdata = array(
+                'title' => $title,
+                'value' => $value
+            );
+            $this->db->where('id', $id);
+            $this->db->update('match-data', $rowdata);
+            return !!$this->db->affected_rows();
+        }
+        public function deleteMatch($id){
+            $this->db->delete('match-data', array('id' => $id)); 
+            return !!$this->db->affected_rows();
+        }
+        public function insertMatch($data){
+            $this->db->insert('match-data', $data);
+            return !!$this->db->affected_rows();
         }
         public function getByAge($from, $to, $gender){
             $condition = array('age >= ' => $from, 'age < ' => $to, 'sex = ' => $gender);
