@@ -63,6 +63,25 @@
             $query = $this->db->get('gender-data');
             return $query->result();
         }
+        public function updateGender($data){
+            extract($data);
+            $rowdata = array(
+                'title' => $title,
+                'value' => $value
+            );
+            $this->db->where('id', $id);
+            $this->db->update('gender-data', $rowdata);
+            return !!$this->db->affected_rows();
+        }
+        public function deleteGender($id){
+            $this->db->where('id', $id);
+            $this->db->delete('gender-data');
+            return !!$this->db->affected_rows();
+        }
+        public function insertGender($data){
+            $this->db->insert('gender-data', $data);
+            return !!$this->db->affected_rows();
+        }
         public function getMatches(){
             $query = $this->db->get('match-data');
             return $query->result();

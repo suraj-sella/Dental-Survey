@@ -139,6 +139,36 @@ class Survey_data extends REST_Controller {
         $this->response($genders, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
+    public function getGenders_put(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->updateGender($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getGenders_delete($data){
+        $id = (int)$data;
+        $response = $this->db->delete('gender-data', array('id' => $id)); 
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getGenders_post(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->insertGender($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
     public function getMatches_get(){
         $matches = $this->survey_data_model->getMatches();
         $this->response($matches, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code

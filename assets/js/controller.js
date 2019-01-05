@@ -654,3 +654,104 @@ app.controller('agerangesCtrl', ['$scope', 'GetAgeRange', '$q', 'NgTableParams',
     $scope.populateTable();
 
 }]);
+
+app.controller('gendersCtrl', ['$scope', 'GetGenders', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, GetGenders, $q, NgTableParams, Excel, $timeout){
+    
+    $scope.genders = [];
+    $scope.populateTable=function(){
+        $q.all([
+            //AGE-RANGE
+            $scope.gender = GetGenders.query(),
+            $scope.gender.$promise.then(function(response){
+                for (let key = 0; key < response.length; key++) {
+                    response[key].id = Number(response[key].id);
+                }
+                $scope.genders = response;
+            }),
+        ]).then(function(response){
+            $scope.tableParams = new NgTableParams({
+                page: 1,
+                count: 10
+            },{
+                counts: [],
+                dataset: $scope.genders
+            });
+            $scope.newRow.id = $scope.tableParams.total() + 1;
+        });
+    }
+    
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            if (downloadName != null) {
+                var link = document.createElement("a");
+                link.download = downloadName + ".xls";
+                link.href = exportHref;
+                link.click();
+            }
+        },100);
+    }
+
+    $scope.editShow = false;      
+    $scope.editRow = [];      
+    $scope.newRow = [];      
+    
+    $scope.editGender = function (entry) {
+        $scope.editShow = true;      
+        $scope.editRow = entry;
+    }
+    
+    $scope.updateGender = function (entry) {
+        $scope.gender = GetGenders.put(entry),
+        $scope.gender.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                $scope.editRow = [];    
+                alert('Updated Successfully!');
+            }else{
+                console.log(response);
+            }
+            $scope.editShow = false;    
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.deleteGender = function (entry) {
+        $scope.gender = GetGenders.delete({id: entry.id}),
+        $scope.gender.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                alert('Deleted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.insertGender = function (entry) {
+        $scope.gender = GetGenders.save({
+            id: entry.id,
+            title: entry.title,
+            value: entry.value
+        }),
+        $scope.gender.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                $scope.newRow = [];    
+                alert('Inserted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.populateTable();
+
+}]);
