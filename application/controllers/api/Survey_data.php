@@ -104,6 +104,36 @@ class Survey_data extends REST_Controller {
         $this->response($agerange, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
+    public function getAgeRange_put(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->updateAgeRange($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getAgeRange_delete($data){
+        $id = (int)$data;
+        $response = $this->db->delete('age-range', array('id' => $id)); 
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function getAgeRange_post(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->insertAgeRange($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
     public function getGenders_get(){
         $genders = $this->survey_data_model->getGenders();
         $this->response($genders, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code

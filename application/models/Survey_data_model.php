@@ -39,6 +39,26 @@
             $query = $this->db->get('age-range');
             return $query->result();
         }
+        public function updateAgeRange($data){
+            extract($data);
+            $rowdata = array(
+                'from' => $from,
+                'to' => $to,
+                'title' => $title
+            );
+            $this->db->where('id', $id);
+            $this->db->update('age-range', $rowdata);
+            return !!$this->db->affected_rows();
+        }
+        public function deleteAgeRange($id){
+            $this->db->where('id', $id);
+            $this->db->delete('age-range');
+            return !!$this->db->affected_rows();
+        }
+        public function insertAgeRange($data){
+            $this->db->insert('age-range', $data);
+            return !!$this->db->affected_rows();
+        }
         public function getGenders(){
             $query = $this->db->get('gender-data');
             return $query->result();

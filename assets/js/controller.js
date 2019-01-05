@@ -552,28 +552,32 @@ app.controller('findCtrl', ['$scope', 'GetFindingsTab', 'GetFindingsTotals', 'Ex
 }]);
 
 app.controller('agerangesCtrl', ['$scope', 'GetAgeRange', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, GetAgeRange, $q, NgTableParams, Excel, $timeout){
+    
     $scope.ranges = [];
-    $q.all([
-        //AGE-RANGE
-        $scope.agerange = GetAgeRange.query(),
-        $scope.agerange.$promise.then(function(response){
-            for (let key = 0; key < response.length; key++) {
-                response[key].id = Number(response[key].id);
-                response[key].from = Number(response[key].from);
-                response[key].to = Number(response[key].to);
-            }
-            $scope.ranges = response;
-        }),
-    ]).then(function(response){
-        $scope.tableParams = new NgTableParams({
-            page: 1,
-            count: 10
-        },{
-            counts: [5, 10, 20, 50],
-            dataset: $scope.ranges
+    $scope.populateTable=function(){
+        $q.all([
+            //AGE-RANGE
+            $scope.agerange = GetAgeRange.query(),
+            $scope.agerange.$promise.then(function(response){
+                for (let key = 0; key < response.length; key++) {
+                    response[key].id = Number(response[key].id);
+                    response[key].from = Number(response[key].from);
+                    response[key].to = Number(response[key].to);
+                }
+                $scope.ranges = response;
+            }),
+        ]).then(function(response){
+            $scope.tableParams = new NgTableParams({
+                page: 1,
+                count: 10
+            },{
+                counts: [],
+                dataset: $scope.ranges
+            });
+            $scope.newRow.id = $scope.tableParams.total() + 1;
         });
-    });
-
+    }
+    
     //EXPORT MODULE
     $scope.exportToExcel=function(tableId){
         var exportHref=Excel.tableToExcel(tableId,'Survey Data');
@@ -588,16 +592,65 @@ app.controller('agerangesCtrl', ['$scope', 'GetAgeRange', '$q', 'NgTableParams',
         },100);
     }
 
-    //EDIT FUNCTION DECISION
-    $scope.edit = function(fname, entry){
-        if(fname=='age'){
-            $scope.editAgeRange(entry);
-        }
+    $scope.editShow = false;      
+    $scope.editRow = [];      
+    $scope.newRow = [];      
+    
+    $scope.editAgeRange = function (entry) {
+        $scope.editShow = true;      
+        $scope.editRow = entry;
+    }
+    
+    $scope.updateAgeRange = function (entry) {
+        $scope.agerange = GetAgeRange.put(entry),
+        $scope.agerange.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                $scope.editRow = [];    
+                alert('Updated Successfully!');
+            }else{
+                console.log(response);
+            }
+            $scope.editShow = false;    
+        }, function(error) {
+            console.log(error);
+        });
     }
 
-    //EDIT AGE RANGE
-    $scope.editAgeRange = function (entry) {
-               
+    $scope.deleteAgeRange = function (entry) {
+        $scope.agerange = GetAgeRange.delete({id: entry.id}),
+        $scope.agerange.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                alert('Deleted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
     }
+
+    $scope.insertAgeRange = function (entry) {
+        $scope.agerange = GetAgeRange.save({
+            id: entry.id,
+            title: entry.title,
+            from: entry.from,
+            to: entry.to
+        }),
+        $scope.agerange.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                $scope.newRow = [];    
+                alert('Inserted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.populateTable();
 
 }]);
