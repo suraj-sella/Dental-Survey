@@ -404,6 +404,87 @@ app.controller('homeCtrl', ['$scope', 'Entries', 'NgTableParams', 'Excel', '$tim
                 $scope.noFindFor.push('Incomplete rct');
             }
         }
+        if(data.comp.includes('Requires crown in rct treated tooth')){
+            if(data.find.includes('Needing rct')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Requires crown in rct treated tooth');
+            }
+        }
+        if(data.comp.includes('Diplopia on looking down')){
+            if(data.find.includes('Displaced fracture floor of orbit with herniation of contents into maxillary sinus')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Diplopia on looking down');
+            }
+        }
+        if(data.comp.includes('Teeth erupted three days after birth')){
+            if(data.find.includes('Neonatal mandibular anterior teeth')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Teeth erupted three days after birth');
+            }
+        }
+        if(data.comp.includes('Drooling of saliva')){
+            if(data.find.includes('Known case of neuromuscular deficit')||data.find.includes('sialorrhea due to inability to swallow')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Drooling of saliva');
+            }
+        }
+        if(data.comp.includes('Requires crown in rct treated tooth')){
+            if(data.find.includes('Tooth preparation done wrt 24,25,26')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Requires crown in rct treated tooth');
+            }
+        }
+        if(data.comp.includes('Pain in soft tissues of face')){
+            if(data.find.includes('Reduced mouth opening')||data.find.includes('Facial myalgia')||data.find.includes('Masticatory muscle myalgia')||data.find.includes('Ulceroproliferative growth')||data.find.includes('Suspected malignancy')||data.find.includes('Carcinoma')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Pain in soft tissues of face');
+            }
+        }
+        if(data.comp.includes('Pain in soft tissues of oral cavity')){
+            if(data.find.includes('Contact lichenoid reaction wrt left buccal mucosa. Homogeneous leukoplakia wrt left lower alveolar and vestibular mucosa')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Pain in soft tissues of oral cavity');
+            }
+        }
+        if(data.comp.includes('Itching sensation on left side of face post extraction')){
+            if(data.find.includes('Healing socket wrt 36')||data.find.includes('paraesthesia secondary to traumatic extraction')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Itching sensation on left side of face post extraction');
+            }
+        }
+        if(data.comp.includes('Worn away teeth')){
+            if(data.find.includes('Fractured tooth')||data.find.includes('Abrasion')){
+                $scope.matchCount++;
+                return 'true';
+            }
+            else{
+                $scope.noFindFor.push('Worn away teeth');
+            }
+        }
         if($scope.noFindFor.length>0){
             return 'false';
         }
