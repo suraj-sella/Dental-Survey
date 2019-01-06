@@ -44,6 +44,7 @@
                     <a class="dropdown-item" href="#!ageranges">Age Ranges Data</a>
                     <a class="dropdown-item" href="#!genders">Genders Data</a>
                     <a class="dropdown-item" href="#!matches">Matches Data</a>
+                    <a class="dropdown-item" href="#!entries">Entries Data</a>
                     <a class="dropdown-item" href="#!complaintsmaster">Complaints List</a>
                     <a class="dropdown-item" href="#!findingsmaster">Findings List</a>
                     <a class="dropdown-item" href="#!scoringchart">Scoring Chart</a>

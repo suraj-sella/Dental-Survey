@@ -21,6 +21,26 @@
             $query = $this->db->get_where('entries', array('id' => $id));
             return $query->result();
         }
+        public function updateEntry($data){
+            extract($data);
+            $rowdata = array(
+                'age' => $age,
+                'sex' => $sex,
+                'comp' => $comp,
+                'find' => $find
+            );
+            $this->db->where('id', $id);
+            $this->db->update('entries', $rowdata);
+            return !!$this->db->affected_rows();
+        }
+        public function deleteEntry($id){
+            $this->db->delete('entries', array('id' => $id)); 
+            return !!$this->db->affected_rows();
+        }
+        public function insertEntry($data){
+            $this->db->insert('entries', $data);
+            return !!$this->db->affected_rows();
+        }
         public function getDistinctComplaints(){
             $this->db->distinct('comp');
             $this->db->select('comp');

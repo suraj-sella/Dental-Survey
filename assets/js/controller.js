@@ -937,3 +937,107 @@ app.controller('matchesCtrl', ['$scope', 'GetMatches', '$q', 'NgTableParams', 'E
     $scope.populateTable();
 
 }]);
+
+app.controller('entriesCtrl', ['$scope', 'Entries', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, Entries, $q, NgTableParams, Excel, $timeout){
+    
+    $scope.entries = [];
+    $scope.populateTable=function(){
+        $q.all([
+            //ENTRIES
+            $scope.entry = Entries.query({from: 0, to: 150, gender: 'all'}),
+            $scope.entry.$promise.then(function(response){
+                for (let key = 0; key < response.length; key++) {
+                    response[key].id = Number(response[key].id);
+                    response[key].age = Number(response[key].age);
+                }
+                $scope.entries = response;
+            }),
+        ]).then(function(response){
+            $scope.tableParams = new NgTableParams({
+                page: 1,
+                count: 10
+            },{
+                counts: [],
+                dataset: $scope.entries
+            });
+            $scope.newRow.id = $scope.tableParams.total() + 1;
+        });
+    }
+    
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            if (downloadName != null) {
+                var link = document.createElement("a");
+                link.download = downloadName + ".xls";
+                link.href = exportHref;
+                link.click();
+            }
+        },100);
+    }
+
+    $scope.editShow = false;      
+    $scope.editRow = [];      
+    $scope.newRow = [];      
+    
+    $scope.editEntry = function (entry) {
+        $scope.editShow = true;      
+        $scope.editRow = entry;
+    }
+    
+    $scope.updateEntry = function (entry) {
+        $scope.entry = Entries.put(entry),
+        $scope.entry.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                $scope.editRow = [];    
+                alert('Updated Successfully!');
+            }else{
+                console.log(response);
+            }
+            $scope.editShow = false;    
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.deleteEntry = function (entry) {
+        $scope.entry = Entries.delete({id: entry.id}),
+        $scope.entry.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTable();
+                alert('Deleted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.insertEntry = function (entry) {
+        $scope.entry = Entries.save({
+            id: entry.id,
+            age: entry.age,
+            sex: entry.sex,
+            comp: entry.comp,
+            find: entry.findd
+        }),
+        $scope.entry.$promise.then(function(response){
+            if(response.response){
+                $scope.newRow = [];    
+                $scope.populateTable();
+                alert('Inserted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.populateTable();
+
+}]);

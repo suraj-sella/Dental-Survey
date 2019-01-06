@@ -26,6 +26,9 @@ app.config(function($routeProvider) {
     }).when("/scoringchart", {
       controller: 'scoringchartCtrl',
       templateUrl : "/Dental-Survey/assets/views/scoringchart.php"
+    }).when("/entries", {
+      controller: 'entriesCtrl',
+      templateUrl : "/Dental-Survey/assets/views/entries.php"
     }).otherwise({
       controller: 'homeCtrl',
       templateUrl : "/Dental-Survey/assets/views/home.php"

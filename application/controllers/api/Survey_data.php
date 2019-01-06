@@ -99,6 +99,37 @@ class Survey_data extends REST_Controller {
         }
     }
 
+    public function entries_put(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->updateEntry($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function entries_delete(){
+        $data = $this->get('id');
+        $id = (int)$data;
+        $response = $this->survey_data_model->deleteEntry($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function entries_post(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->insertEntry($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
     public function getAgeRange_get(){
         $agerange = $this->survey_data_model->getAgeRange();
         $this->response($agerange, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
