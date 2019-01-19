@@ -272,6 +272,153 @@ class Survey_data extends REST_Controller {
         $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
+    public function complaintsMaster_get(){
+        $distinctComplaints = $this->survey_data_model->getDistinctComplaints();
+        $explodedComplaints = array();
+        $complaints = array();
+        $data = array();
+        for ($i=0;$i<sizeof($distinctComplaints);$i++) { 
+            $explodedComplaints[$i] = explode(';', $distinctComplaints[$i]->comp);
+        }
+        for ($i=0, $k=0; $i<sizeof($explodedComplaints); $i++) { 
+            for ($j=0; $j < sizeof($explodedComplaints[$i]); $j++) { 
+                if(!in_array(ucwords($explodedComplaints[$i][$j]), $complaints)){
+                    $complaints[$k] = ucwords($explodedComplaints[$i][$j]);
+                    $k++;
+                }
+            }
+        }
+        for($i=0;$i<sizeof($complaints);$i++){
+            $data[$i]['id']=$i+1;
+            $data[$i]['name']=$complaints[$i];
+        }
+        $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function complaintsMaster_post(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->insertComplaint($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function complaintsMaster_delete($data){
+        $id = (int)$data;
+        $response = $this->survey_data_model->deleteComplaint($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function complaintsMaster_put(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->updateComplaint($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function complaintsMasterUser_get(){
+        $response = $this->survey_data_model->getComplaints();
+        $this->response($response, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function findingsMaster_get(){
+        $distinctFindings = $this->survey_data_model->getDistinctFindings();
+        $explodedFindings = array();
+        $findings = array();
+        $data = array();
+        for ($i=0;$i<sizeof($distinctFindings);$i++) { 
+            $explodedFindings[$i] = explode(';', $distinctFindings[$i]->find);
+        }
+        for ($i=0, $k=0; $i<sizeof($explodedFindings); $i++) { 
+            for ($j=0; $j < sizeof($explodedFindings[$i]); $j++) { 
+                if(!in_array(ucwords($explodedFindings[$i][$j]), $findings)){
+                    $findings[$k] = ucwords($explodedFindings[$i][$j]);
+                    $k++;
+                }
+            }
+        }
+        for($i=0;$i<sizeof($findings);$i++){
+            $data[$i]['id']=$i+1;
+            $data[$i]['name']=$findings[$i];
+        }
+        $this->response($data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function findingsMaster_post(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->insertFinding($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function findingsMaster_delete($data){
+        $id = (int)$data;
+        $response = $this->survey_data_model->deleteFinding($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function findingsMaster_put(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->updateFinding($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function findingsMasterUser_get(){
+        $response = $this->survey_data_model->getFindings();
+        $this->response($response, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+    
+    public function compTab_put(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->updateComplaint($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function compTab_delete(){
+        $data = $this->get('id');
+        $id = (int)$data;
+        $response = $this->survey_data_model->deleteComplaint($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
+    public function compTab_post(){
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $response = $this->survey_data_model->insertComplaint($data);
+        $result = array(
+            'status' => 1,
+            'response' => $response
+        );
+        $this->response($result, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+    }
+
     public function getCompTotals_get(){
         $agerange = $this->survey_data_model->getAgeRange();
         $data = array();

@@ -55,6 +55,50 @@
             $query = $this->db->get('entries');
             return $query->result();
         }
+        public function getComplaints(){
+            $query = $this->db->get('complaints');
+            return $query->result();
+        }
+        public function updateComplaint($data){
+            extract($data);
+            $rowdata = array(
+                'name' => $name
+            );
+            $this->db->where('id', $id);
+            $this->db->update('complaints', $rowdata);
+            return !!$this->db->affected_rows();
+        }
+        public function deleteComplaint($id){
+            $this->db->delete('complaints', array('id' => $id)); 
+            return !!$this->db->affected_rows();
+        }
+        public function insertComplaint($data){
+            $this->db->insert('complaints', $data);
+            return !!$this->db->affected_rows();
+        }
+
+        public function getFindings(){
+            $query = $this->db->get('findings');
+            return $query->result();
+        }
+        public function updateFinding($data){
+            extract($data);
+            $rowdata = array(
+                'name' => $name
+            );
+            $this->db->where('id', $id);
+            $this->db->update('findings', $rowdata);
+            return !!$this->db->affected_rows();
+        }
+        public function deleteFinding($id){
+            $this->db->delete('findings', array('id' => $id)); 
+            return !!$this->db->affected_rows();
+        }
+        public function insertFinding($data){
+            $this->db->insert('findings', $data);
+            return !!$this->db->affected_rows();
+        }
+
         public function getAgeRange(){
             $query = $this->db->get('age-range');
             return $query->result();

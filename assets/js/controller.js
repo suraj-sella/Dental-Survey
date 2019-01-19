@@ -1041,3 +1041,279 @@ app.controller('entriesCtrl', ['$scope', 'Entries', '$q', 'NgTableParams', 'Exce
     $scope.populateTable();
 
 }]);
+
+app.controller('complaintsmasterCtrl', ['$scope', 'GetComplaintsMaster', 'GetComplaintsMasterUser', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, GetComplaintsMaster, GetComplaintsMasterUser, $q, NgTableParams, Excel, $timeout){
+    
+    $scope.complaints = [];
+    $scope.populateTable=function(){
+        $q.all([
+            //ENTRIES
+            $scope.complaint = GetComplaintsMaster.query(),
+            $scope.complaint.$promise.then(function(response){
+                for (let key = 0; key < response.length; key++) {
+                    response[key].id = Number(response[key].id);
+                }
+                $scope.complaints = response;
+            }),
+        ]).then(function(response){
+            $scope.tableParams = new NgTableParams({
+                page: 1,
+                count: 10
+            },{
+                counts: [],
+                dataset: $scope.complaints
+            });
+            $scope.newRow.id = $scope.tableParams.total() + 1;
+        });
+    }
+
+    $scope.populateTableUser=function(){
+        $q.all([
+            //ENTRIES
+            $scope.complaint = GetComplaintsMasterUser.query(),
+            $scope.complaint.$promise.then(function(response){
+                for (let key = 0; key < response.length; key++) {
+                    response[key].id = Number(response[key].id);
+                }
+                $scope.complaints = response;
+            }),
+        ]).then(function(response){
+            $scope.tableParams = new NgTableParams({
+                page: 1,
+                count: 10
+            },{
+                counts: [],
+                dataset: $scope.complaints
+            });
+            $scope.newRow.id = $scope.tableParams.total() + 1;
+        });
+    }
+    
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            if (downloadName != null) {
+                var link = document.createElement("a");
+                link.download = downloadName + ".xls";
+                link.href = exportHref;
+                link.click();
+            }
+        },100);
+    }
+
+    $scope.editShow = false;      
+    $scope.insertShow = false;      
+    $scope.editRow = [];      
+    $scope.newRow = [];      
+    
+    $scope.editComplaint = function (entry) {
+        $scope.editShow = true;
+        $scope.insertShow = false;       
+        $scope.editRow = entry;
+    }
+    
+    $scope.updateComplaint = function (entry) {
+        $scope.complaint = GetComplaintsMaster.put(entry),
+        $scope.complaint.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTableUser();
+                $scope.editRow = [];    
+                alert('Updated Successfully!');
+            }else{
+                console.log(response);
+            }
+            $scope.editShow = false;    
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.deleteComplaint = function (entry) {
+        $scope.complaint = GetComplaintsMaster.delete({id: entry.id}),
+        $scope.complaint.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTableUser();
+                alert('Deleted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.insertComplaint = function (entry) {
+        $scope.complaint = GetComplaintsMaster.save({
+            id: entry.id,
+            name: entry.name
+        }),
+        $scope.complaint.$promise.then(function(response){
+            if(response.response){
+                $scope.newRow = [];    
+                $scope.populateTableUser();
+                alert('Inserted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.isEntries = false;
+    $scope.populate = function(param){
+        if(param){
+            $scope.isEntries = false;
+            $scope.populateTable();
+            $scope.editShow = false;
+            $scope.insertShow = false;
+        }else{
+            $scope.populateTableUser();
+            $scope.isEntries = true;
+            $scope.editShow = false;
+            $scope.insertShow = !$scope.editShow;
+        }
+    }
+    $scope.populate();
+
+}]);
+
+app.controller('findingsmasterCtrl', ['$scope', 'GetFindingsMaster', 'GetFindingsMasterUser', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, GetFindingsMaster, GetFindingsMasterUser, $q, NgTableParams, Excel, $timeout){
+    
+    $scope.complaints = [];
+    $scope.populateTable=function(){
+        $q.all([
+            //ENTRIES
+            $scope.finding = GetFindingsMaster.query(),
+            $scope.finding.$promise.then(function(response){
+                for (let key = 0; key < response.length; key++) {
+                    response[key].id = Number(response[key].id);
+                }
+                $scope.findings = response;
+            }),
+        ]).then(function(response){
+            $scope.tableParams = new NgTableParams({
+                page: 1,
+                count: 10
+            },{
+                counts: [],
+                dataset: $scope.findings
+            });
+            $scope.newRow.id = $scope.tableParams.total() + 1;
+        });
+    }
+
+    $scope.populateTableUser=function(){
+        $q.all([
+            //ENTRIES
+            $scope.finding = GetFindingsMasterUser.query(),
+            $scope.finding.$promise.then(function(response){
+                for (let key = 0; key < response.length; key++) {
+                    response[key].id = Number(response[key].id);
+                }
+                $scope.findings = response;
+            }),
+        ]).then(function(response){
+            $scope.tableParams = new NgTableParams({
+                page: 1,
+                count: 10
+            },{
+                counts: [],
+                dataset: $scope.findings
+            });
+            $scope.newRow.id = $scope.tableParams.total() + 1;
+        });
+    }
+    
+    //EXPORT MODULE
+    $scope.exportToExcel=function(tableId){
+        var exportHref=Excel.tableToExcel(tableId,'Survey Data');
+        $timeout(function(){
+            var downloadName = prompt("What Would You Name The File?", "AnalysisData");
+            if (downloadName != null) {
+                var link = document.createElement("a");
+                link.download = downloadName + ".xls";
+                link.href = exportHref;
+                link.click();
+            }
+        },100);
+    }
+
+    $scope.editShow = false;      
+    $scope.insertShow = false;      
+    $scope.editRow = [];      
+    $scope.newRow = [];      
+    
+    $scope.editFinding = function (entry) {
+        $scope.editShow = true;
+        $scope.insertShow = false;       
+        $scope.editRow = entry;
+    }
+    
+    $scope.updateFinding = function (entry) {
+        $scope.finding = GetFindingsMaster.put(entry),
+        $scope.finding.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTableUser();
+                $scope.editRow = [];    
+                alert('Updated Successfully!');
+            }else{
+                console.log(response);
+            }
+            $scope.editShow = false;    
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.deleteFinding = function (entry) {
+        $scope.finding = GetFindingsMaster.delete({id: entry.id}),
+        $scope.finding.$promise.then(function(response){
+            if(response.response){
+                $scope.populateTableUser();
+                alert('Deleted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.insertFinding = function (entry) {
+        $scope.finding = GetFindingsMaster.save({
+            id: entry.id,
+            name: entry.name
+        }),
+        $scope.finding.$promise.then(function(response){
+            if(response.response){
+                $scope.newRow = [];    
+                $scope.populateTableUser();
+                alert('Inserted Successfully!');
+            }else{
+                console.log(response);
+            }
+        }, function(error) {
+            console.log(error);
+        });
+    }
+
+    $scope.isEntries = false;
+    $scope.populate = function(param){
+        if(param){
+            $scope.isEntries = false;
+            $scope.populateTable();
+            $scope.editShow = false;
+            $scope.insertShow = false;
+        }else{
+            $scope.populateTableUser();
+            $scope.isEntries = true;
+            $scope.editShow = false;
+            $scope.insertShow = !$scope.editShow;
+        }
+    }
+    $scope.populate();
+
+}]);

@@ -30,6 +30,38 @@ app.factory('GetMatches', ['$resource', function($resource) {
     });
 }]);
 
+app.factory('GetComplaintsMaster', ['$resource', function($resource) {
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/complaintsMaster/:id', {}, {
+        put: {
+            method: 'PUT'
+        }
+    });
+}]);
+
+app.factory('GetComplaintsMasterUser', ['$resource', function($resource) {
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/complaintsMasterUser/:id', {}, {
+        put: {
+            method: 'PUT'
+        }
+    });
+}]);
+
+app.factory('GetFindingsMaster', ['$resource', function($resource) {
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/findingsMaster/:id', {}, {
+        put: {
+            method: 'PUT'
+        }
+    });
+}]);
+
+app.factory('GetFindingsMasterUser', ['$resource', function($resource) {
+    return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/findingsMasterUser/:id', {}, {
+        put: {
+            method: 'PUT'
+        }
+    });
+}]);
+
 app.factory('GetComplaintsTab', ['$resource', function($resource) {
     return $resource('http://localhost/Dental-Survey/index.php/api/survey_data/compTab/');
 }]);
