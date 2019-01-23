@@ -62,7 +62,8 @@
         public function updateComplaint($data){
             extract($data);
             $rowdata = array(
-                'name' => $name
+                'name' => $name,
+                'findingid' => $findingid
             );
             $this->db->where('id', $id);
             $this->db->update('complaints', $rowdata);

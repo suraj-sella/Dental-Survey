@@ -23,9 +23,6 @@ app.config(function($routeProvider) {
     }).when("/findingsmaster", {
       controller: 'findingsmasterCtrl',
       templateUrl : "/Dental-Survey/assets/views/findingsmaster.php"
-    }).when("/scoringchart", {
-      controller: 'scoringchartCtrl',
-      templateUrl : "/Dental-Survey/assets/views/scoringchart.php"
     }).when("/entries", {
       controller: 'entriesCtrl',
       templateUrl : "/Dental-Survey/assets/views/entries.php"

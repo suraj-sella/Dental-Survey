@@ -47,7 +47,6 @@
                     <a class="dropdown-item" href="#!entries">Entries Data</a>
                     <a class="dropdown-item" href="#!complaintsmaster">Complaints List</a>
                     <a class="dropdown-item" href="#!findingsmaster">Findings List</a>
-                    <a class="dropdown-item" href="#!scoringchart">Scoring Chart</a>
                   </div>
                 </li>
               </ul>
