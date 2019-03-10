@@ -63,7 +63,8 @@
             extract($data);
             $rowdata = array(
                 'name' => $name,
-                'findingid' => $findingid
+                'findingid' => $findingid,
+                'isothers' => $isothers
             );
             $this->db->where('id', $id);
             $this->db->update('complaints', $rowdata);
@@ -74,6 +75,18 @@
             return !!$this->db->affected_rows();
         }
         public function insertComplaint($data){
+            $this->db->select('*');
+            $this->db->where('id', $data['id']);
+            $query = $this->db->get('complaints');
+            if($this->db->affected_rows()){
+                $data['id'] = NULL;
+            }
+            $data['isothers'] = $data['isothers']['id'];
+            $findingids = array();
+            for($i = 0; $i < count($data['findingid']); $i++){
+                array_push($findingids, $data['findingid'][$i]['id']);
+            }
+            $data['findingid'] = implode(',', $findingids);
             $this->db->insert('complaints', $data);
             return !!$this->db->affected_rows();
         }

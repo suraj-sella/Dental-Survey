@@ -1,14 +1,18 @@
 html {
-    overflow: scroll;
-    overflow-x: hidden;
+	overflow: scroll;
+	overflow-x: hidden;
 }
+
 ::-webkit-scrollbar {
-    width: 1.2rem;  /* remove scrollbar space */
-    background: #215568;  /* optional: just make scrollbar invisible */
+	width: 1.2rem;
+	/* remove scrollbar space */
+	background: #215568;
+	/* optional: just make scrollbar invisible */
 }
+
 /* optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
-    background: #e9feff;
+	background: #e9feff;
 }
 
 body {
@@ -148,37 +152,105 @@ tbody {
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px
 }
-.ng-table-counts{
+
+.ng-table-counts {
 	float: right;
 }
-h1{
+
+h1 {
 	margin-bottom: 0;
 }
-.table thead th{
+
+.table thead th {
 	border: 1px solid #dee2e6;
 }
-.emptycell{
+
+.emptycell {
 	border-bottom: 1px solid #215769 !important;
 }
+
 .tfoot th {
-    color: #215769;
+	color: #215769;
 }
+
 .table thead th {
 	vertical-align: inherit;
 }
-.nav-link{
+
+.nav-link {
 	font-size: 1.1rem;
 	background-color: #f8f9fa;
 	border-color: #f8f9fa;
 	border-radius: .25rem;
-	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
-.navbar-nav{
+
+.navbar-nav {
 	padding-left: 1rem;
 }
-.nav-item{
+
+.nav-item {
 	margin-right: 0.5rem;
 }
-.form-group{
+
+.form-group {
 	margin-bottom: 0rem;
+}
+
+.btn-group.open .dropdown-toggle {
+	box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 7;
+	display: none;
+	float: left;
+	min-width: 160px;
+	padding: 5px 0;
+	margin: 2px 0 0;
+	list-style: none;
+	font-size: 14px;
+	text-align: left;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, .15);
+	border-radius: 4px;
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	background-clip: padding-box;
+}
+
+.dropdown-menu>li>a:focus,
+.dropdown-menu>li>a:hover {
+	text-decoration: none;
+	color: #fff;
+	background-color: #44a1b7;
+}
+
+.dropdown-menu>li>a {
+	display: block;
+	padding: 3px 20px;
+	clear: both;
+	font-weight: 400;
+	line-height: 1.428571429;
+	color: #215468;
+	white-space: nowrap;
+}
+
+.dropdown-menu .divider {
+	height: 1px;
+	margin: 0.2rem 0;
+	overflow: hidden;
+	background-color: #21546845;
+}
+
+.dropdown-menu>.active>a,
+.dropdown-menu>.active>a:focus,
+.dropdown-menu>.active>a:hover {
+	color: #fff;
+	text-decoration: none;
+	outline: 0;
+	background-color: #215468;
 }

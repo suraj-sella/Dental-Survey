@@ -1042,7 +1042,7 @@ app.controller('entriesCtrl', ['$scope', 'Entries', '$q', 'NgTableParams', 'Exce
 
 }]);
 
-app.controller('complaintsmasterCtrl', ['$scope', 'GetComplaintsMaster', 'GetComplaintsMasterUser', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, GetComplaintsMaster, GetComplaintsMasterUser, $q, NgTableParams, Excel, $timeout){
+app.controller('complaintsmasterCtrl', ['$scope', 'GetComplaintsMaster', 'GetComplaintsMasterUser', 'GetFindingsMasterUser', 'GetFindingsMaster', '$q', 'NgTableParams', 'Excel', '$timeout', function($scope, GetComplaintsMaster, GetComplaintsMasterUser, GetFindingsMasterUser, GetFindingsMaster, $q, NgTableParams, Excel, $timeout){
     
     $scope.complaints = [];
     $scope.populateTable=function(){
@@ -1072,9 +1072,43 @@ app.controller('complaintsmasterCtrl', ['$scope', 'GetComplaintsMaster', 'GetCom
             //ENTRIES
             $scope.complaint = GetComplaintsMasterUser.query(),
             $scope.complaint.$promise.then(function(response){
-                for (let key = 0; key < response.length; key++) {
-                    response[key].id = Number(response[key].id);
-                }
+                $scope.finding = GetFindingsMasterUser.query();
+                $scope.finding.$promise.then(function(findresponse){
+                    for (let key = 0; key < response.length; key++) {
+                        response[key].id = Number(response[key].id);
+                        response[key].isothers = (Number(response[key].isothers)==1)?'Yes':'No';
+                        if(response[key].findingid.includes(',')){
+                            response[key].findingid = response[key].findingid.split(',');
+                            for (let subkey = 0; subkey < response[key].findingid.length; subkey++) {
+                                response[key].findingid[subkey] = Number(response[key].findingid[subkey]);
+                                for (let findkey = 0; findkey < findresponse.length; findkey++) {
+                                    findresponse[findkey].id = Number(findresponse[findkey].id);
+                                    if(findresponse[findkey].id == response[key].findingid[subkey]){
+                                        response[key].findingid[subkey] = {'id': response[key].findingid[subkey], 'name': findresponse[findkey].name}
+                                    }else{
+                                        // response[key].findingid = 'ZZZZZ';
+                                    }
+                                }         
+                            }
+                            const element = [];
+                            for (const name in response[key].findingid) {
+                                if (response[key].findingid.hasOwnProperty(name)) {
+                                    element.push(response[key].findingid[name].name);
+                                }
+                            }
+                            response[key].findingid.name = element;
+                        }else{
+                            for (let findkey = 0; findkey < findresponse.length; findkey++) {
+                                findresponse[findkey].id = Number(findresponse[findkey].id);
+                                if(findresponse[findkey].id == response[key].findingid){
+                                    response[key].findingid = {'id': response[key].findingid, 'name': findresponse[findkey].name};
+                                }else{
+                                    // response[key].findingid = 'ZZZZZ';
+                                }
+                            }
+                        }
+                    }
+                });
                 $scope.complaints = response;
             }),
         ]).then(function(response){
@@ -1086,6 +1120,15 @@ app.controller('complaintsmasterCtrl', ['$scope', 'GetComplaintsMaster', 'GetCom
                 dataset: $scope.complaints
             });
             $scope.newRow.id = $scope.tableParams.total() + 1;
+            $scope.newRow.findingid = [];      
+            $scope.findingdata = [];
+            $scope.findings = GetFindingsMasterUser.query();
+            $scope.findings.$promise.then(function(response){
+                for(let i = 0; i< response.length; i++){
+                    $scope.findingdata.push({id: response[i].id, label: response[i].name});
+                }
+            });
+            $scope.newRow.isothers = $scope.isothersdata[1];
         });
     }
     
@@ -1106,7 +1149,28 @@ app.controller('complaintsmasterCtrl', ['$scope', 'GetComplaintsMaster', 'GetCom
     $scope.editShow = false;      
     $scope.insertShow = false;      
     $scope.editRow = [];      
-    $scope.newRow = [];      
+    $scope.newRow = [];     
+    $scope.findingsettings = {
+        enableSearch: true,
+        searchField: 'label',
+        buttonClasses: 'btn btn-sm btn-info',
+        smartButtonMaxItems:5, 
+        smartButtonTextConverter: function(itemText, originalItem) {
+            return itemText; 
+        },
+        scrollableHeight: '5rem',
+        scrollable: true,
+        keyboardControls: true,
+        styleActive: true,
+        selectedToTop: true
+    };
+    $scope.translationtexts = {
+        buttonDefaultText: 'Select Findings'
+    };
+    $scope.isothersdata = [
+        {id: 1, name: 'Yes'},
+        {id: 0, name: 'No'}
+    ]; 
     
     $scope.editComplaint = function (entry) {
         $scope.editShow = true;
@@ -1115,7 +1179,9 @@ app.controller('complaintsmasterCtrl', ['$scope', 'GetComplaintsMaster', 'GetCom
     }
     
     $scope.updateComplaint = function (entry) {
-        $scope.complaint = GetComplaintsMaster.put(entry),
+        var entryy = angular.copy(entry);
+        entryy.isothers = (entryy.isothers=="No")?0:1;
+        $scope.complaint = GetComplaintsMaster.put(entryy),
         $scope.complaint.$promise.then(function(response){
             if(response.response){
                 $scope.populateTableUser();
@@ -1147,7 +1213,9 @@ app.controller('complaintsmasterCtrl', ['$scope', 'GetComplaintsMaster', 'GetCom
     $scope.insertComplaint = function (entry) {
         $scope.complaint = GetComplaintsMaster.save({
             id: entry.id,
-            name: entry.name
+            name: entry.name,
+            findingid: entry.findingid,
+            isothers: entry.isothers
         }),
         $scope.complaint.$promise.then(function(response){
             if(response.response){
